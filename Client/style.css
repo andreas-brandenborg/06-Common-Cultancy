@@ -3,9 +3,15 @@
     color: white;
 }
 
+header {
+    height: 10vh;
+}
+
 #flexbox {
     display: flex;
     justify-content: space-between;
+    height: 90vh;
+    align-items: center;
 }
 
 #flexbox > div:nth-child(odd) {
