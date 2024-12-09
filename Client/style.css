@@ -10,7 +10,7 @@ header {
 #flexbox {
     display: flex;
     justify-content: space-between;
-    height: 90vh;
+    height: 70vh;
     align-items: center;
 }
 
@@ -22,4 +22,16 @@ header {
 #flexbox > div:nth-child(2) {
     background-color: green;
     flex-grow: 1;
+}
+
+#scrollbar {
+    background-color: gray;
+    height: 90vh;
+}
+
+#scroll-element {
+    position: relative;
+    background-color: darkorchid;
+    height: 50px;
+    top: 5%;
 }
