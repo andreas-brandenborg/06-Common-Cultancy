@@ -1,37 +1,39 @@
-* {
+body {
     background-color: black;
     color: white;
+    margin: 0;
 }
 
-header {
-    height: 10vh;
+section {
+    margin-bottom: 3rem;
 }
 
-#flexbox {
-    display: flex;
-    justify-content: space-between;
-    height: 70vh;
-    align-items: center;
-}
-
-#flexbox > div:nth-child(odd) {
-    background-color: blue;
-    flex-grow: 6;
-}
-
-#flexbox > div:nth-child(2) {
-    background-color: green;
-    flex-grow: 1;
-}
-
-#scrollbar {
-    background-color: gray;
-    height: 90vh;
-}
-
-#scroll-element {
-    position: relative;
+#total-interactions-section {
     background-color: darkorchid;
-    height: 50px;
-    top: 5%;
+}
+
+#negative-posts-section {
+    height: 800px;
+    background-color: aquamarine;
+}
+
+#economic-section {
+    height: 800px;
+    background-color: chartreuse;
+}
+
+#line-graph {
+    position: sticky;
+    bottom: 0;
+    height: 300px;
+    width: 100%;
+    background-color: #f72f20;
+    box-shadow: -2px -2px 20px #240705;
+}
+
+#data {
+    background-color: white;
+    width: 80%;
+    height: 50%;
+    color: black;
 }
