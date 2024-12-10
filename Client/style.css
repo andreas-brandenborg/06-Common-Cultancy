@@ -2,6 +2,33 @@ body {
     background-color: black;
     color: white;
     margin: 0;
+    font-family: "Roboto", sans-serif;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 400;
+}
+
+h3 {
+    font-size: 2rem;
+    font-weight: 350;
+}
+
+h4 {
+    font-size: 1.75rem;
+    font-weight: 350;
+}
+
+p {
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.6rem;
 }
 
 section {
@@ -36,4 +63,31 @@ section {
     width: 80%;
     height: 50%;
     color: black;
+}
+
+#landing-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#landing-page div:nth-child(odd) {
+    width: 1px; /* Kinda pointless, but needed for flex-grow to make sense. */
+    flex-grow: 150;
+    padding: 3rem;
+}
+
+#landing-page div:nth-child(even) {
+    background-color: #404040;
+    border-radius: 50px;
+    height: 80vh;
+    width: .35rem;
+}
+
+#landing-page > div > p:last-child {
+    color: grey;
+    font-style: italic;
 }
