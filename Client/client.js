@@ -19,23 +19,19 @@ function displayFirstPost ()  {
 
 
 
-
-
-
-
 function createLineChart () {
 
         const ctx = document.querySelector('#chart').getContext('2d');
-        const chart = new Chart(ctx, {
+        new Chart(ctx, {
                 type: 'line',
                 data: {
                         datasets: [{
                                 label: 'Total interaktioner',
-                                data: [67, 69, 58, 79],
+                                data: [1,2,3,4],
                                 borderColor: ['#ff0000']
                         }
                                 ],
-                        labels: ['monday', 'tuesday', 'wednesday', 'thursday']
+                        labels: ['1', '2', '3', '4']
                 },
                 options: {
                         plugins: {
