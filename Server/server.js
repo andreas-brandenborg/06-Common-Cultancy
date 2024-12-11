@@ -23,7 +23,11 @@ app.get('/test',(req,res)=> {
 });
 
 app.get('/total-interactions',(req,res)=> {
-    let q = `SELECT * FROM classification LIMIT 1`;
+    let q = `SELECT yearmonth, SUM(total_interactions) as interactions_yearmonth
+                    FROM metrics
+                    INNER JOIN time ON time.ccpost_id = metrics.ccpost_id
+                    GROUP BY yearmonth
+                    ORDER BY yearmonth;`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })

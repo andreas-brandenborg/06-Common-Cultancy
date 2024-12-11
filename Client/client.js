@@ -1,7 +1,7 @@
 const dataDOM = document.querySelector("#data");
 
-displayFirstPost()
-createLineChart()
+displayFirstPost();
+createLineChart();
 
 function displayFirstPost ()  {
         fetch("http://localhost:3000/test")
@@ -14,14 +14,6 @@ function displayFirstPost ()  {
                     dataDOM.appendChild(paragraphElement);
             })
 }
-
-
-
-
-
-
-
-
 
 function createLineChart () {
 
