@@ -27,7 +27,7 @@ app.get('/total-interactions',(req,res)=> {
     let q = `SELECT yearmonth, SUM(total_interactions) as interactions_yearmonth
                     FROM metrics
                     INNER JOIN time ON time.ccpost_id = metrics.ccpost_id
-                    WHERE yearmonth > 2021
+                    Where yearmonth > 2021
                     GROUP BY yearmonth
                     ORDER BY yearmonth;`;
     connection.query(q, (error, results)=>{

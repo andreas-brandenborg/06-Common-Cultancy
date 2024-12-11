@@ -6,7 +6,7 @@ displaySecondPost();
 fetchMonthData = [];
 fetchInteractions = [];
 
-async function displaySecondPost() {
+function displaySecondPost() {
         fetch("http://localhost:3000/total-interactions")
             .then(response => response.json())
             .then(data => {
@@ -32,10 +32,10 @@ function createChart() {
                 label: 'Total interaktioner',
                 data: fetchInteractions, // Use the yValue array for the chart data
                 borderColor: ['#B60104'],
-                backgroundColor: "black",
+                backgroundColor: 'rgba(182, 1, 4, 0.3)',
                 tension: 0.4,
-                borderWidth: 4
-
+                borderWidth: 2.5,
+                fill: true
             }],
             labels: fetchMonthData // Use the xValue array for the chart labels
         },
@@ -44,12 +44,23 @@ function createChart() {
                 x: {
                     grid:{
                         display: false
+                    },
+                    ticks: {
+                        color: "white"
                     }
                 },
                 y: {
                     grid: {
                         display: false
                     },
+                    ticks: {
+                        color: "white",
+                        callback: function(value, index, values) {
+                            if (value >= 1000000) {
+                                return (value / 1000000) + ' mil';
+                            }
+                            return value; }
+                    }
                 }
             },
             plugins: {
@@ -131,11 +142,15 @@ function createChart() {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Total interaktioner'
+                    text: 'Total interaktioner',
+                    color: "white"
                 },
                 legend: {
-                    position: 'bottom'
-                },
+                    position: '',
+                    labels: {
+                        color:"white"
+                    }
+                    },
                 tooltip: {
                     enabled: true,
                     backgroundColor: "black"
@@ -144,6 +159,9 @@ function createChart() {
         }
     });
 }
+
+
+
 
 // Function to progressively reveal more points on scroll
 function updateChartOnScroll(event) {
