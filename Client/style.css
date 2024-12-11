@@ -53,9 +53,9 @@ section {
     position: sticky;
     bottom: 0;
     height: 300px;
-    width: 100%;
-    background-color: #f72f20;
-    box-shadow: -2px -2px 20px #240705;
+    width:max-content;
+    margin-left:auto;
+    box-shadow: -2px -2px 20px black;
 }
 
 #data {
@@ -142,4 +142,9 @@ section {
 
 #social-media > div:nth-child(1) {
     background-color: blue;
+}
+
+#social-media > div > img {
+    width: 100px;
+    height: 100px;
 }
