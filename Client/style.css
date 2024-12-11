@@ -137,18 +137,36 @@ section {
 #social-media {
     display: flex;
     flex-direction: column;
+    width: fit-content;
 }
 
 #social-media > div {
     display: flex;
     flex-direction: row;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    height: 4rem;
+    cursor: pointer;
 }
 
 #social-media > div:nth-child(1) {
-    background-color: blue;
+    background-color: #486dc3;
+}
+
+#social-media > div:nth-child(2) {
+    background-color: #0290d1;
+}
+
+#social-media > div:nth-child(3) {
+    background-color: #1a1a1a;
 }
 
 #social-media > div > img {
-    width: 100px;
-    height: 100px;
+    height: 100%;
+}
+
+#social-media > div > p {
+    align-self: center;
+    margin-left: 2rem;
+    margin-right: 3rem;
 }
