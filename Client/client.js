@@ -110,6 +110,7 @@ async function displaySecondPost() {
         });
 }
 
+
 // Function to create the chart
 function createChart() {
     const ctx = document.querySelector('#chart').getContext('2d');
