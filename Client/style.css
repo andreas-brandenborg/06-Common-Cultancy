@@ -36,7 +36,11 @@ section {
 }
 
 #total-interactions-section {
-    background-color: darkorchid;
+    background-color: black;
+}
+
+#timeline {
+    margin-left: 100px;
 }
 
 #negative-posts-section {
@@ -53,10 +57,10 @@ section {
     position: sticky;
     bottom: 0;
     height: 300px;
-    width:max-content;
-    margin-left:auto;
     box-shadow: -2px -2px 20px black;
+    width: 100%;
 }
+
 
 #data {
     background-color: black;
