@@ -143,3 +143,8 @@ section {
 #social-media > div:nth-child(1) {
     background-color: blue;
 }
+
+#social-media > div > img {
+    width: 100px;
+    height: 100px;
+}
