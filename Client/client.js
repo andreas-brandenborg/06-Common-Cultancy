@@ -1,7 +1,9 @@
 const dataDOM = document.querySelector("#data");
 
 displayFirstPost();
-createLineChart();
+
+displaySecondPost();
+
 
 function displayFirstPost ()  {
         fetch("http://localhost:3000/test")
@@ -12,10 +14,31 @@ function displayFirstPost ()  {
                     const paragraphText = document.createTextNode(dataText);
                     paragraphElement.appendChild(paragraphText);
                     dataDOM.appendChild(paragraphElement);
+
             })
 }
 
-function createLineChart () {
+fetchMonthData = [];
+fetchInteractions = [];
+
+async function displaySecondPost() {
+        fetch("http://localhost:3000/total-interactions")
+            .then(response => response.json())
+            .then(data => {
+
+                    for (let i = 0; i < data.length; i++) {
+                            fetchMonthData.push(data[i].yearmonth);
+                            fetchInteractions.push(data[i].interactions_yearmonth);
+                    }
+            })
+            .catch(error => {
+                    console.error('Error fetching data:', error);
+            });
+}
+
+
+
+
 
         const ctx = document.querySelector('#chart').getContext('2d');
         const chart = new Chart(ctx, {
@@ -23,22 +46,21 @@ function createLineChart () {
                 data: {
                         datasets: [{
                                 label: 'Total interaktioner',
-                                data: [67, 69, 58, 79],
+                                data: fetchInteractions, // Use the yValue array for the chart data
                                 borderColor: ['#ff0000']
-                        }
-                                ],
-                        labels: ['monday', 'tuesday', 'wednesday', 'thursday']
+                        }],
+                        labels: fetchMonthData // Use the xValue array for the chart labels
                 },
                 options: {
                         plugins: {
                                 title: {
                                         display: true,
-                                        text: 'TikTok vs Youtube views'
+                                        text: 'Total interaktioner'
                                 },
                                 legend: {
                                         position: 'bottom'
                                 }
                         }
                 }
-        })
-}
+        });
+
