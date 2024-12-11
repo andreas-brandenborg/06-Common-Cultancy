@@ -1,11 +1,11 @@
-const dataDOM = document.querySelector("#data");
+const ctx = document.querySelector('#chart').getContext('2d');
 
 displaySecondPost();
 
 fetchMonthData = [];
 fetchInteractions = [];
 
-async function displaySecondPost() {
+function displaySecondPost() {
         fetch("http://localhost:3000/total-interactions")
             .then(response => response.json())
             .then(data => {
@@ -20,7 +20,6 @@ async function displaySecondPost() {
             });
 }
 
-const ctx = document.querySelector('#chart').getContext('2d');
 function createChart() {
     const chart = new Chart(ctx, {
         type: 'line',
