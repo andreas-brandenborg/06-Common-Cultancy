@@ -1,7 +1,6 @@
 const dataDOM = document.querySelector("#data");
 
 displayFirstPost();
-
 displaySecondPost();
 
 
@@ -36,31 +35,47 @@ async function displaySecondPost() {
             });
 }
 
+const ctx = document.querySelector('#chart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        datasets: [{
+            label: 'Total interaktioner',
+            data: fetchInteractions, // Use the yValue array for the chart data
+            borderColor: ['#B60104'],
+            backgroundColor: "black",
+            tension: 0.4,
+            borderWidth: 4
 
-
-
-
-        const ctx = document.querySelector('#chart').getContext('2d');
-        const chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                        datasets: [{
-                                label: 'Total interaktioner',
-                                data: fetchInteractions, // Use the yValue array for the chart data
-                                borderColor: ['#ff0000']
-                        }],
-                        labels: fetchMonthData // Use the xValue array for the chart labels
-                },
-                options: {
-                        plugins: {
-                                title: {
-                                        display: true,
-                                        text: 'Total interaktioner'
-                                },
-                                legend: {
-                                        position: 'bottom'
-                                }
-                        }
+        }],
+        labels: fetchMonthData // Use the xValue array for the chart labels
+    },
+    options: {
+        scales: {
+            x: {
+                grid:{
+                    display: false
                 }
-        });
+            },
+            y: {
+                grid: {
+                    display: false
+                },
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Total interaktioner'
+            },
+            legend: {
+                position: 'bottom'
+            },
+            tooltip: {
+                enabled: true,
+                backgroundColor: "black"
+            }
+        }
+    }
+});
 
