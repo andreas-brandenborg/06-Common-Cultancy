@@ -91,3 +91,55 @@ section {
     color: grey;
     font-style: italic;
 }
+
+#call-to-action-flex > h1 {
+    text-align: center;
+    margin: 1rem;
+}
+
+#call-to-action-flex > div {
+    display: flex;
+    flex-direction: row;
+}
+
+#call-to-action-flex > div > div:nth-child(1){
+    padding-left: 2rem;
+    width: 50%;
+}
+
+#call-to-action-flex > div > div:nth-child(2){
+    background-color: #404040;
+    border-radius: 50px;
+    height: 60vh;
+    width: .35rem;
+    align-self: center;
+}
+
+#call-to-action-flex > div > div:nth-child(3){
+    padding-left: 2rem;
+    width: 50%;
+}
+
+#fund-ukraine-1 {
+    font-style: italic;
+    color: gold;
+}
+
+#fund-ukraine-2 {
+    font-style: italic;
+    color: blue;
+}
+
+#social-media {
+    display: flex;
+    flex-direction: column;
+}
+
+#social-media > div {
+    display: flex;
+    flex-direction: row;
+}
+
+#social-media > div:nth-child(1) {
+    background-color: blue;
+}
