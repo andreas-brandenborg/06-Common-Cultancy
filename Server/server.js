@@ -22,6 +22,7 @@ app.get('/test',(req,res)=> {
     })
 });
 
+// Result: [{"yearmonth": "2019-01", "interactions_yearmonth": "110"}, ...]
 app.get('/total-interactions',(req,res)=> {
     let q = `SELECT yearmonth, SUM(total_interactions) as interactions_yearmonth
                     FROM metrics
