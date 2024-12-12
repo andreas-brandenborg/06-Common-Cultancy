@@ -1,10 +1,50 @@
 const dataDOM = document.querySelector("#data");
 const ctx = document.querySelector('#chart').getContext('2d');
 
-displaySecondPost();
-
+//Handlers
+//handler for fetch data, loop af data, og push til array, fungerer på alle endpoints
+function getLabels(data, labelKey) {
+    let datalabels = []; // tomt array
+    for (let i = 0; i < data.length; i++) { // itererer gennem array af data fra mysql
+        datalabels.push(data[i][labelKey]); // array push alt med parametrne som er sql kolonne navn
+    }
+    return datalabels; // returnerer fyldte array
+}
+function getValues(data, valueKey) {
+    let datavalues = [];
+    for (let i = 0; i < data.length; i++) {
+        datavalues.push(data[i][valueKey]); //
+    }
+    return datavalues; // Return the array
+}
+function getEndpointData(endpoint, labelKey, valueKey) {
+    return fetch(endpoint) // tager en parameter endpoint og henter data
+        .then(response => response.json())
+        .then(data => {
+            const labels = getLabels(data, labelKey);// tager svaret json svar som params
+            const values = getValues(data, valueKey);// handlers der samler dataen til grafer
+            return { labels, values }; // returner et array af labels,values
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
 fetchMonthData = [];
 fetchInteractions = [];
+
+async function createPost() {
+    const { labels, values } = await getEndpointData
+
+        ("http://localhost:3000/total-interactions",// endpoint for dataFetch fra sql
+         "interactions_yearmonth", //kolonne i sql med Labels, iterer gennem array push til labels
+         "yearmonth"); // rinse-repeat for Values
+    createChart(labels, values); // skaber charten med labelsne og valuesne
+    console.log(labels,values)
+}
+
+createPost()
+/*/
+displaySecondPost();
 
 function displaySecondPost() {
         fetch("http://localhost:3000/total-interactions")
@@ -20,29 +60,27 @@ function displaySecondPost() {
                     console.error('Error fetching data:', error);
             });
 }
+ /*/
+function createChart(values,labels){
 
-
-
-
-function createChart() {
     const chart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [{
                 label: 'Total interaktioner',
-                data: fetchInteractions, // Use the yValue array for the chart data
+                data: values, // Use the yValue array for the chart data
                 borderColor: ['#B60104'],
                 backgroundColor: 'rgba(182, 1, 4, 0.3)',
                 tension: 0.4,
                 borderWidth: 2.5,
                 fill: true
             }],
-            labels: fetchMonthData // Use the xValue array for the chart labels
+            labels: labels // Use the xValue array for the chart labels
         },
         options: {
             scales: {
                 x: {
-                    grid:{
+                    grid: {
                         display: false
                     },
                     ticks: {
@@ -55,11 +93,12 @@ function createChart() {
                     },
                     ticks: {
                         color: "white",
-                        callback: function(value, index, values) {
+                        callback: function (value, index, values) {
                             if (value >= 1000000) {
                                 return (value / 1000000) + ' mil';
                             }
-                            return value; }
+                            return value;
+                        }
                     }
                 }
             },
@@ -79,7 +118,6 @@ function createChart() {
         }
     });
 }
-
 
 
 
