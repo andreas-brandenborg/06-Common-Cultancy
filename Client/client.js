@@ -4,6 +4,7 @@ const boxchart = document.querySelector("#chart2").getContext("2d")
 showLineChart();
 createSocialMediaBar();
 createEconomicSupportBar();
+createBoxChart()
 
 fetchMonthData = [];
 fetchInteractions = [];
@@ -307,10 +308,6 @@ function BoxChart(values, labels) {
     })
 }
 
-const testEndpoint = fetch("http://localhost:3000/negative-posts")
-console.log(testEndpoint)
-
-
 async function createBoxChart () {
     const { labels, values } = await getEndpointData
 
@@ -321,7 +318,7 @@ async function createBoxChart () {
     console.log(labels,values)
 }
 
-createBoxChart()
+
 
 
 
