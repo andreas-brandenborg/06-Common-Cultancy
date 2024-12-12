@@ -268,7 +268,11 @@ function BoxChart(values, labels) {
             datasets: [{
                 data: values,
                 label: "Distribution of affility",
-                backgroundColor: ["red", "darkgray", "darkgray"]
+                borderColor: ['#B60104', "#525252", "#525252"],
+                backgroundColor: ['rgba(182, 1, 4, 0.3)', "rgba(140, 140, 140, 0.3)", "rgba(140, 140, 140, 0.3)"],
+                tension: 0.4,
+                borderWidth: 2.5,
+                fill: true
             }]
 
         },
@@ -283,6 +287,14 @@ function BoxChart(values, labels) {
                             return value;
                         }
                     }
+                }
+            },
+            plugins: {
+                title: {
+                    display: false
+                },
+                legend: {
+                    display: false
                 }
             }
         }
