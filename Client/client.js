@@ -130,9 +130,10 @@ function createChart(values,labels){
                 title: {
                     display: true,
                     text: 'Total interaktioner',
+                    color: "white"
                 },
                 legend: {
-                    position: 'bottom'
+                    position: 'line'
                 },
                 tooltip: {
                     enabled: true,
