@@ -45,7 +45,7 @@ section {
 
 #negative-posts-section {
     height: 800px;
-    background-color: aquamarine;
+    background-color: black;
 }
 
 #economic-section {
@@ -94,6 +94,26 @@ section {
 #landing-page > div > p:last-child {
     color: grey;
     font-style: italic;
+}
+#negative-posts-section {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+#negative-posts-section div:nth-child(even) {
+    background-color: #404040;
+    border-radius: 50px;
+    height: 80vh;
+    width: .35rem;
+}
+
+#negative-posts-section div:nth-child(odd) {
+    width: 1px; /* Kinda pointless, but needed for flex-grow to make sense. */
+    flex-grow: 150;
+    padding: 3rem;
 }
 
 #call-to-action-flex > h1 {

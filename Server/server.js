@@ -36,7 +36,10 @@ app.get('/total-interactions',(req,res)=> {
 });
 
 app.get('/negative-posts',(req,res)=> {
-    let q = `SELECT * FROM classification LIMIT 1`;
+    let q = `select count(gpt_ukraine_for_imod), gpt_ukraine_for_imod
+                    from classification
+                    group by gpt_ukraine_for_imod
+                    order by count(gpt_ukraine_for_imod) asc`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })

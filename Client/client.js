@@ -1,5 +1,6 @@
-const dataDOM = document.querySelector("#data");
-const ctx = document.querySelector('#chart').getContext('2d');
+
+const ctx = document.querySelector('#chart1').getContext('2d');
+const boxchart = document.querySelector("#chart2").getContext("2d")
 
 //Handlers
 //handler for fetch data, loop af data, og push til array, fungerer på alle endpoints
@@ -39,7 +40,6 @@ async function createPost() {
          "interactions_yearmonth", //kolonne i sql med Labels, iterer gennem array push til labels
          "yearmonth"); // rinse-repeat for Values
     createChart(labels, values); // skaber charten med labelsne og valuesne
-    console.log(labels,values)
 }
 
 createPost()
@@ -119,11 +119,59 @@ function createChart(values,labels){
     });
 }
 
+function BoxChart(values, labels) {
+    const chart = new Chart(boxchart, {
+        type: "bar",
+        data: {
+            labels: ["Against", "For", "Neutral"],
+            datasets: [{
+                data: values,
+                label: "Distribution of affility",
+                backgroundColor: ["red", "darkgray", "darkgray"]
+            }]
+
+        },
+        options: {
+            scales: {
+                y: {
+                    ticks: {
+                        callback: function (value, index, values) {
+                            if (value >= 1000) {
+                                return (value / 1000) + ' thsd';
+                            }
+                            return value;
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
+
+const testEndpoint = fetch("http://localhost:3000/negative-posts")
+console.log(testEndpoint)
+
+
+async function createBoxChart () {
+    const { labels, values } = await getEndpointData
+
+    ("http://localhost:3000/negative-posts",// endpoint for dataFetch fra sql
+        "count(gpt_ukraine_for_imod)", //kolonne i sql med Labels, iterer gennem array push til labels
+        "gpt_ukraine_for_imod"); // rinse-repeat for Values
+    BoxChart(labels, values); // skaber charten med labelsne og valuesne
+    console.log(labels,values)
+}
+
+createBoxChart()
+
+
+
+ /*
 
 
 
 
-/*
+
 let fetchMonthData = [];
 let fetchInteractions = [];
 let chart; // Global chart instance
@@ -233,4 +281,6 @@ window.addEventListener('wheel', updateChartOnScroll);
 // Fetch data and initialize chart
 displaySecondPost();
 
-*/
+
+
+  */
