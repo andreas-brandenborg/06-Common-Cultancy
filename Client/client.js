@@ -280,12 +280,18 @@ function BoxChart(values, labels) {
             scales: {
                 y: {
                     ticks: {
+                        color: "white",
                         callback: function (value, index, values) {
                             if (value >= 1000) {
                                 return (value / 1000) + ' thsd';
                             }
                             return value;
                         }
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: "white"
                     }
                 }
             },
