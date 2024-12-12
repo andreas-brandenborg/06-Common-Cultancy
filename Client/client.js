@@ -1,4 +1,3 @@
-
 const ctx = document.querySelector('#chart1').getContext('2d');
 const boxchart = document.querySelector("#chart2").getContext("2d")
 
