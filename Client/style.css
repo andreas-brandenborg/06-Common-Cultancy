@@ -48,11 +48,6 @@ section {
     background-color: aquamarine;
 }
 
-#economic-section {
-    height: 800px;
-    background-color: chartreuse;
-}
-
 #line-graph {
     position: sticky;
     bottom: 0;
@@ -82,6 +77,7 @@ section {
     width: 1px; /* Kinda pointless, but needed for flex-grow to make sense. */
     flex-grow: 150;
     padding: 3rem;
+    padding-right: 100px;
 }
 
 #landing-page div:nth-child(even) {
@@ -104,10 +100,13 @@ section {
 #call-to-action-flex > div {
     display: flex;
     flex-direction: row;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 #call-to-action-flex > div > div:nth-child(1){
     padding-left: 2rem;
+    margin-right: 5rem;
     width: 50%;
 }
 
@@ -120,7 +119,7 @@ section {
 }
 
 #call-to-action-flex > div > div:nth-child(3){
-    padding-left: 2rem;
+    margin-left: 5rem;
     width: 50%;
 }
 
@@ -169,4 +168,26 @@ section {
     align-self: center;
     margin-left: 2rem;
     margin-right: 3rem;
+}
+
+#economic-section > div {
+    padding-left: 100px;
+    padding-right: 100px;
+    margin-bottom: 5rem;
+}
+
+#economic-section > div:nth-child(1) {
+    width: 60%;
+}
+
+#economic-section > div:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#economic-section > div:nth-child(2) > div {
+    width: 50%;
+    margin-right: 1rem;
+    margin-left: 1rem;
 }

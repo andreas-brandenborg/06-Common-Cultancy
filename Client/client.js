@@ -1,6 +1,13 @@
 const dataDOM = document.querySelector("#data");
 const ctx = document.querySelector('#chart').getContext('2d');
 
+showLineChart();
+createSocialMediaBar();
+createEconomicSupportBar();
+
+fetchMonthData = [];
+fetchInteractions = [];
+
 //Handlers
 //handler for fetch data, loop af data, og push til array, fungerer på alle endpoints
 function getLabels(data, labelKey) {
@@ -10,6 +17,7 @@ function getLabels(data, labelKey) {
     }
     return datalabels; // returnerer fyldte array
 }
+
 function getValues(data, valueKey) {
     let datavalues = [];
     for (let i = 0; i < data.length; i++) {
@@ -17,6 +25,7 @@ function getValues(data, valueKey) {
     }
     return datavalues; // Return the array
 }
+
 function getEndpointData(endpoint, labelKey, valueKey) {
     return fetch(endpoint) // tager en parameter endpoint og henter data
         .then(response => response.json())
@@ -29,12 +38,9 @@ function getEndpointData(endpoint, labelKey, valueKey) {
             console.error('Error fetching data:', error);
         });
 }
-fetchMonthData = [];
-fetchInteractions = [];
 
-async function createPost() {
+async function showLineChart() {
     const { labels, values } = await getEndpointData
-
         ("http://localhost:3000/total-interactions",// endpoint for dataFetch fra sql
          "interactions_yearmonth", //kolonne i sql med Labels, iterer gennem array push til labels
          "yearmonth"); // rinse-repeat for Values
@@ -42,7 +48,7 @@ async function createPost() {
     console.log(labels,values)
 }
 
-createPost()
+
 /*/
 displaySecondPost();
 
@@ -119,9 +125,123 @@ function createChart(values,labels){
     });
 }
 
+function createSocialMediaBar() {
+    // For some reason, we can't have this as a global variable.
+    const socialMediaBar = document.querySelector("#social-media-bar").getContext('2d');
+    const chart = new Chart(socialMediaBar, {
+        type: 'bar',
+        data: {
+            datasets: [{
+                label: 'Social Media Interactions',
+                data: [200, 60, 30],
+                borderColor: ['#B60104'],
+                backgroundColor: 'rgba(182, 1, 4, 0.3)',
+                tension: 0.4,
+                borderWidth: 2.5,
+                fill: true
+            }],
+            labels: ["2022", "2023", "2024"]
+        },
+        options: {
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: "white"
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: "white",
+                        callback: function (value, index, values) {
+                            if (value >= 1000000) {
+                                return (value / 1000000) + ' mil';
+                            }
+                            return value;
+                        }
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Social Media Interactions',
+                },
+                legend: {
+                    position: ''
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: "black"
+                }
+            }
+        }
+    });
+}
 
-
-
+function createEconomicSupportBar() {
+    // For some reason, we can't have this as a global variable.
+    const socialMediaBar = document.querySelector("#economic-support-bar").getContext('2d');
+    const chart = new Chart(socialMediaBar, {
+        type: 'bar',
+        data: {
+            datasets: [{
+                label: 'Economic Support',
+                data: [200, 60, 30],
+                borderColor: ['#B60104'],
+                backgroundColor: 'rgba(182, 1, 4, 0.3)',
+                tension: 0.4,
+                borderWidth: 2.5,
+                fill: true
+            }],
+            labels: ["2022", "2023", "2024"]
+        },
+        options: {
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: "white"
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: "white",
+                        callback: function (value, index, values) {
+                            if (value >= 1000000) {
+                                return (value / 1000000) + ' mil';
+                            }
+                            return value;
+                        }
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Economic Support',
+                },
+                legend: {
+                    position: ''
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: "black"
+                }
+            }
+        }
+    });
+}
 
 /*
 let fetchMonthData = [];
