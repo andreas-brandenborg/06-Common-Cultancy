@@ -2,12 +2,10 @@
 const ctx = document.querySelector('#chart1').getContext('2d');
 const boxchart = document.querySelector("#chart2").getContext("2d")
 
-showLineChart();
+
 createSocialMediaBar();
 createEconomicSupportBar();
-
-fetchMonthData = [];
-fetchInteractions = [];
+showLineChart()
 
 //Handlers
 //handler for fetch data, loop af data, og push til array, fungerer på alle endpoints
@@ -67,24 +65,6 @@ async function showEconomicSupportBar() {
     console.log(labels,values)
 }
 
-/*/
-displaySecondPost();
-
-function displaySecondPost() {
-        fetch("http://localhost:3000/total-interactions")
-            .then(response => response.json())
-            .then(data => {
-                    for (let i = 0; i < data.length; i++) {
-                            fetchMonthData.push(data[i].yearmonth);
-                            fetchInteractions.push(data[i].interactions_yearmonth);
-                    }
-                    createChart();
-            })
-            .catch(error => {
-                    console.error('Error fetching data:', error);
-            });
-}
- /*/
 function createChart(values,labels){
 
     const chart = new Chart(ctx, {
@@ -143,6 +123,7 @@ function createChart(values,labels){
         }
     });
 }
+
 
 function createSocialMediaBar() {
     // For some reason, we can't have this as a global variable.
