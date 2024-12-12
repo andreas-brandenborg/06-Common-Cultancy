@@ -3,9 +3,9 @@ const ctx = document.querySelector('#chart1').getContext('2d');
 const boxchart = document.querySelector("#chart2").getContext("2d")
 
 showLineChart();
-createSocialMediaBar();
-createEconomicSupportBar();
-createBoxChart()
+showSocialMediaBar();
+showEconomicSupportBar();
+showBoxChart()
 
 fetchMonthData = [];
 fetchInteractions = [];
@@ -52,19 +52,29 @@ async function showLineChart() {
 
 async function showSocialMediaBar() {
     const { labels, values } = await getEndpointData
-    ("http://localhost:3000/total-interactions",// endpoint for dataFetch fra sql
-        "interactions_yearmonth", //kolonne i sql med Labels, iterer gennem array push til labels
-        "yearmonth"); // rinse-repeat for Values
-    createChart(labels, values); // skaber charten med labelsne og valuesne
+    ("http://localhost:3000/social-media-posts",// endpoint for dataFetch fra sql
+        "interactions_year", //kolonne i sql med Labels, iterer gennem array push til labels
+        "year"); // rinse-repeat for Values
+    createSocialMediaBar(labels, values); // skaber charten med labelsne og valuesne
     console.log(labels,values)
 }
 
 async function showEconomicSupportBar() {
     const { labels, values } = await getEndpointData
     ("http://localhost:3000/economic-support",// endpoint for dataFetch fra sql
-        "interactions_yearmonth", //kolonne i sql med Labels, iterer gennem array push til labels
-        "yearmonth"); // rinse-repeat for Values
-    createChart(labels, values); // skaber charten med labelsne og valuesne
+        "sum(donation)", //kolonne i sql med Labels, iterer gennem array push til labels
+        "year"); // rinse-repeat for Values
+    createEconomicSupportBar(labels, values); // skaber charten med labelsne og valuesne
+    console.log(labels,values)
+}
+
+async function showBoxChart () {
+    const { labels, values } = await getEndpointData
+
+    ("http://localhost:3000/negative-posts",// endpoint for dataFetch fra sql
+        "count(gpt_ukraine_for_imod)", //kolonne i sql med Labels, iterer gennem array push til labels
+        "gpt_ukraine_for_imod"); // rinse-repeat for Values
+    BoxChart(labels, values); // skaber charten med labelsne og valuesne
     console.log(labels,values)
 }
 
@@ -145,22 +155,22 @@ function createChart(values,labels){
     });
 }
 
-function createSocialMediaBar() {
+function createSocialMediaBar(values, labels) {
     // For some reason, we can't have this as a global variable.
     const socialMediaBar = document.querySelector("#social-media-bar").getContext('2d');
     const chart = new Chart(socialMediaBar, {
         type: 'bar',
         data: {
             datasets: [{
-                label: 'Social Media Interactions',
-                data: [200, 60, 30],
+                label: 'Total Social Media Interactions',
+                data: values,
                 borderColor: ['#B60104'],
                 backgroundColor: 'rgba(182, 1, 4, 0.3)',
                 tension: 0.4,
                 borderWidth: 2.5,
                 fill: true
             }],
-            labels: ["2022", "2023", "2024"]
+            labels: labels
         },
         options: {
             scales: {
@@ -204,7 +214,7 @@ function createSocialMediaBar() {
     });
 }
 
-function createEconomicSupportBar() {
+function createEconomicSupportBar(values, labels) {
     // For some reason, we can't have this as a global variable.
     const socialMediaBar = document.querySelector("#economic-support-bar").getContext('2d');
     const chart = new Chart(socialMediaBar, {
@@ -212,14 +222,14 @@ function createEconomicSupportBar() {
         data: {
             datasets: [{
                 label: 'Economic Support',
-                data: [200, 60, 30],
+                data: values,
                 borderColor: ['#B60104'],
                 backgroundColor: 'rgba(182, 1, 4, 0.3)',
                 tension: 0.4,
                 borderWidth: 2.5,
                 fill: true
             }],
-            labels: ["2022", "2023", "2024"]
+            labels: labels
         },
         options: {
             scales: {
@@ -309,15 +319,7 @@ function BoxChart(values, labels) {
     })
 }
 
-async function createBoxChart () {
-    const { labels, values } = await getEndpointData
 
-    ("http://localhost:3000/negative-posts",// endpoint for dataFetch fra sql
-        "count(gpt_ukraine_for_imod)", //kolonne i sql med Labels, iterer gennem array push til labels
-        "gpt_ukraine_for_imod"); // rinse-repeat for Values
-    BoxChart(labels, values); // skaber charten med labelsne og valuesne
-    console.log(labels,values)
-}
 
 
 

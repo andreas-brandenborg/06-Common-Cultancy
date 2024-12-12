@@ -46,14 +46,21 @@ app.get('/negative-posts',(req,res)=> {
 });
 
 app.get('/economic-support',(req,res)=> {
-    let q = `SELECT * FROM classification LIMIT 1`;
+    let q = `select sum(donation), year 
+                    from economic_support
+                    group by year`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
 });
 
 app.get('/social-media-posts',(req,res)=> {
-    let q = `SELECT * FROM classification LIMIT 1`;
+    let q = `SELECT year, SUM(total_interactions) as interactions_year
+                    FROM metrics
+                    INNER JOIN time ON time.ccpost_id = metrics.ccpost_id
+                    Where yearmonth > 2021
+                    GROUP BY year
+                    ORDER BY year;`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
