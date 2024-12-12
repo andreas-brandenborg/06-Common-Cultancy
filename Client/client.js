@@ -48,6 +48,23 @@ async function showLineChart() {
     console.log(labels,values)
 }
 
+async function showSocialMediaBar() {
+    const { labels, values } = await getEndpointData
+    ("http://localhost:3000/total-interactions",// endpoint for dataFetch fra sql
+        "interactions_yearmonth", //kolonne i sql med Labels, iterer gennem array push til labels
+        "yearmonth"); // rinse-repeat for Values
+    createChart(labels, values); // skaber charten med labelsne og valuesne
+    console.log(labels,values)
+}
+
+async function showEconomicSupportBar() {
+    const { labels, values } = await getEndpointData
+    ("http://localhost:3000/economic-support",// endpoint for dataFetch fra sql
+        "interactions_yearmonth", //kolonne i sql med Labels, iterer gennem array push til labels
+        "yearmonth"); // rinse-repeat for Values
+    createChart(labels, values); // skaber charten med labelsne og valuesne
+    console.log(labels,values)
+}
 
 /*/
 displaySecondPost();

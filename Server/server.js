@@ -49,6 +49,13 @@ app.get('/economic-support',(req,res)=> {
     })
 });
 
+app.get('/social-media-posts',(req,res)=> {
+    let q = `SELECT * FROM classification LIMIT 1`;
+    connection.query(q, (error, results)=>{
+        res.send(results);
+    })
+});
+
 // Start server. Needs to be below end points.
 app.listen(port, ()=>{
     console.log("Hey guys we are officially LIVE !!!!");
