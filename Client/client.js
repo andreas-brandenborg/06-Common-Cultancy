@@ -1,6 +1,9 @@
 
 const ctx = document.querySelector('#chart1').getContext('2d');
 const boxchart = document.querySelector("#chart2").getContext("2d")
+const facebookDom = document.querySelector("#facebook")
+const linkedInDom = document.querySelector("#linkedin")
+const xDom = document.querySelector("#x")
 
 showLineChart();
 createSocialMediaBar();
@@ -318,6 +321,20 @@ async function createBoxChart () {
     BoxChart(labels, values); // skaber charten med labelsne og valuesne
     console.log(labels,values)
 }
+
+
+// buttons til share på sociale medier.
+
+facebookDom.addEventListener("click", function() {
+    document.location.href = `https://www.facebook.com/share.php?=`
+} )
+
+linkedInDom.addEventListener("click", function() {
+    document.location.href = `https://www.linkedin.com/article/new/`
+} )
+xDom.addEventListener("click", function() {
+    document.location.href = `https://x.com/compose/post`
+} )
 
 
 
