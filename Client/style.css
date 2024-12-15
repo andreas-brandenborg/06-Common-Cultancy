@@ -35,35 +35,6 @@ section {
     margin-bottom: 3rem;
 }
 
-#total-interactions-section {
-    background-color: black;
-}
-
-#timeline {
-    margin-left: 100px;
-}
-
-#negative-posts-section {
-    height: 800px;
-    background-color: black;
-}
-
-#line-graph {
-    position: sticky;
-    bottom: 0;
-    height: 300px;
-    box-shadow: -2px -2px 20px black;
-    width: 100%;
-}
-
-
-#data {
-    background-color: black;
-    width: 100%;
-    height: 100%;
-    color: white;
-}
-
 #landing-page {
     height: 100vh;
     display: flex;
@@ -74,7 +45,7 @@ section {
 }
 
 #landing-page div:nth-child(odd) {
-    width: 1px; /* Kinda pointless, but needed for flex-grow to make sense. */
+    width: 1px;
     flex-grow: 150;
     padding: 3rem;
     padding-right: 100px;
@@ -84,34 +55,74 @@ section {
     background-color: #404040;
     border-radius: 50px;
     height: 80vh;
-    width: .35rem;
+    width: 0.35rem;
 }
 
 #landing-page > div > p:last-child {
     color: grey;
     font-style: italic;
 }
-#negative-posts-section {
-    height: 100vh;
+#total-interactions-section {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
 }
-#negative-posts-section div:nth-child(even) {
+#timeline {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    max-height: 100%;
+    background-color: #202020;
+}
+#timelineImage {
+    max-height: 14px;
+    max-width: 14px;
+}
+#line-graph {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #101010;
+}
+
+#line-graph canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+.negative-posts-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+}
+.chart-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 1rem auto;
+}
+.divider {
+    width: 100%;
+    height: 4px;
     background-color: #404040;
-    border-radius: 50px;
-    height: 80vh;
-    width: .35rem;
+    margin: 2rem 0;
 }
-
-#negative-posts-section div:nth-child(odd) {
-    width: 1px; /* Kinda pointless, but needed for flex-grow to make sense. */
-    flex-grow: 150;
-    padding: 3rem;
+#timeline::-webkit-scrollbar {
+    width: 10px;
 }
-
+#timeline::-webkit-scrollbar-track {
+    background-color: #202020;
+}
 #call-to-action-flex > h1 {
     text-align: center;
     margin: 1rem;
@@ -134,7 +145,7 @@ section {
     background-color: #404040;
     border-radius: 50px;
     height: 60vh;
-    width: .35rem;
+    width: 0.35rem;
     align-self: center;
 }
 
@@ -182,6 +193,9 @@ section {
 
 #social-media > div > img {
     height: 100%;
+    width: 100%;
+    max-width: 40px;
+    object-fit: contain;
 }
 
 #social-media > div > p {

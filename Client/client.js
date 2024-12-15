@@ -4,10 +4,17 @@ const facebookDom = document.querySelector("#facebook")
 const linkedInDom = document.querySelector("#linkedin")
 const xDom = document.querySelector("#x")
 
+const colorOne=['rgba(174,11,11,0.91)', "#aa0416",  "rgba(174,11,11,0.91)"]
+const colorTwo = ['rgba(181,20,25,0.83)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"]
+
+
 showLineChart();
 showSocialMediaBar();
 showEconomicSupportBar();
 showBoxChart()
+showAvgSharesBySentiment();
+showAvgInteractionsBySentimentStartWar();
+createDonutRings();
 
 fetchMonthData = [];
 fetchInteractions = [];
@@ -79,7 +86,24 @@ async function showBoxChart () {
     BoxChart(labels, values); // skaber charten med labelsne og valuesne
     console.log(labels,values)
 }
-
+async function showAvgSharesBySentiment() {
+    const { labels, values } = await getEndpointData(
+        "http://localhost:3000/avg-shares-by-sentiment", // New endpoint
+        "sentiment", // Column in SQL for Labels
+        "avg_shares" // Column in SQL for Values
+    );
+    createAvgSharesChart(labels, values); // Create the chart with labels and values
+    console.log(labels, values);
+}
+async function showAvgInteractionsBySentimentStartWar() {
+    const { labels, values } = await getEndpointData(
+        "http://localhost:3000/avg-interactions-by-sentiment-start-war", // New endpoint
+        "sentiment", // Column in SQL for Labels
+        "avg_interactions" // Column in SQL for Values
+    );
+    createAvgInteractionsStartWarChart(labels, values); // Create the chart with labels and values
+    console.log(labels, values);
+}
 /*/
 displaySecondPost();
 
@@ -106,8 +130,8 @@ function createChart(values,labels){
             datasets: [{
                 label: 'Total interaktioner',
                 data: values, // Use the yValue array for the chart data
-                borderColor: ['#B60104'],
-                backgroundColor: 'rgba(182, 1, 4, 0.3)',
+                borderColor: ['rgba(174,11,11,0.91)', "#aa0416",  "rgba(174,11,11,0.91)"],
+                backgroundColor: ['rgba(181,20,25,0.83)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"],
                 tension: 0.4,
                 borderWidth: 2.5,
                 fill: true
@@ -165,9 +189,9 @@ function createSocialMediaBar(values, labels) {
         data: {
             datasets: [{
                 label: 'Total Social Media Interactions',
-                data: values,
-                borderColor: ['#B60104'],
-                backgroundColor: 'rgba(182, 1, 4, 0.3)',
+                 data: values,
+                borderColor: ['rgba(174,11,11,0.91)', "#aa0416",  "rgba(174,11,11,0.91)"],
+                backgroundColor: ['rgba(181,20,25,0.83)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"],
                 tension: 0.4,
                 borderWidth: 2.5,
                 fill: true
@@ -225,8 +249,8 @@ function createEconomicSupportBar(values, labels) {
             datasets: [{
                 label: 'Economic Support',
                 data: values,
-                borderColor: ['#B60104'],
-                backgroundColor: 'rgba(182, 1, 4, 0.3)',
+                borderColor: ['rgba(174,11,11,0.91)', "#aa0416",  "rgba(174,11,11,0.91)"],
+                backgroundColor: ['rgba(181,20,25,0.83)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"],
                 tension: 0.4,
                 borderWidth: 2.5,
                 fill: true
@@ -282,8 +306,8 @@ function BoxChart(values, labels) {
             datasets: [{
                 data: values,
                 label: "Distribution of affility",
-                borderColor: ['#B60104', "#525252", "#525252"],
-                backgroundColor: ['rgba(182, 1, 4, 0.3)', "rgba(140, 140, 140, 0.3)", "rgba(140, 140, 140, 0.3)"],
+                borderColor: ['rgba(174,11,11,0.91)', "#aa0416",  "rgba(174,11,11,0.91)"],
+                backgroundColor: ['rgba(181,20,25,0.83)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"],
                 tension: 0.4,
                 borderWidth: 2.5,
                 fill: true
@@ -320,7 +344,192 @@ function BoxChart(values, labels) {
         }
     })
 }
+async function createDonutRings() {
+    const stackedDonut = document.getElementById('stackedDonutChart').getContext('2d');
 
+    try {
+        // Fetch data from endpoints
+        const postPercentageData = await getEndpointData('http://localhost:3000/post-percentage', 'sentiment', 'post_percentage');
+        const avgInteractionsData = await getEndpointData('http://localhost:3000/avg-interactions', 'sentiment', 'avg_interactions');
+        const avgAngrysData = await getEndpointData('http://localhost:3000/avg-angrys', 'sentiment', 'avg_angrys');
+
+        const labels = postPercentageData.labels;
+        const postPercentages = postPercentageData.values; // Ring 1 data
+        const avgInteractions = avgInteractionsData.values; // Ring 2 data
+        const avgAngrys = avgAngrysData.values; // Ring 3 data
+
+        const firstOrder = [postPercentages, avgAngrys, avgInteractions];
+        const secondOrder = [avgInteractions, avgAngrys, postPercentages];
+
+        new Chart(stackedDonut, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        // Ring 1: Percentages of Posts
+                        label: 'Post Percentage',
+                        data: firstOrder[0], // First ring data
+                        borderColor: ['rgb(95,27,161)', "rgba(181,20,25,0.83)", "rgb(93,31,154)"],
+                        backgroundColor: ['rgb(95,27,161)', "rgba(174,11,11,0.91)", "rgb(95,27,161)"],
+                        hoverOffset: 4,
+                        radius: '25%',
+                    },
+                    {
+                        // Ring 2: Average Engagement
+                        label: 'Average Interactions',
+                        data: secondOrder[0], // Second ring data
+                        borderColor: ['rgb(95,27,161)', "#aa0416", "rgba(174,11,11,0.91)"],
+                        backgroundColor: ['rgb(95,27,161)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"],
+                        hoverOffset: 4,
+                        radius: ['30%', '65%'],
+                    },
+                    {
+                        // Ring 3: Average Angry Reactions
+                        label: 'Average Angry Reactions',
+                        data: secondOrder[2], // Third ring data
+                        borderColor: ['rgb(95,27,161)', "#aa0416", "rgba(174,11,11,0.91)"],
+                        backgroundColor: ['rgb(93,31,154)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"],
+                        hoverOffset: 4,
+                        radius: ['70%', '85%'],
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14,
+                            },
+                        },
+                    },
+                    title: {
+                        display: true,
+                        text: 'Posts, Engagement, and Angry Reactions by Sentiment',
+                    },
+                },
+                layout: {
+                    padding: {
+                        top: 10,
+                        bottom: 10,
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error('Error creating donut chart:', error);
+    }
+}
+
+
+
+function createAvgSharesChart(labels, values) {
+    const avgSharesCtx = document.querySelector('#chart3').getContext('2d');
+    new Chart(avgSharesCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Shares',
+                data: values,
+                borderColor: ['rgba(174,11,11,0.91)', "#aa0416", "rgba(174,11,11,0.91)"],
+                backgroundColor: ['rgba(181,20,25,0.83)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"],
+                tension: 0.4,
+                borderWidth: 2.5,
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: "white" }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: {
+                        color: "white",
+                        callback: function (value) {
+                            if (value >= 1000) {
+                                return (value / 1000) + 'k';
+                            }
+                            return value;
+                        }
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Average Shares by Sentiment',
+                    color: "white"
+                },
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: "black"
+                }
+            }
+        }
+    });
+}
+function createAvgInteractionsStartWarChart(labels, values) {
+    const avgInteractionsStartWarCtx = document.querySelector('#chart4').getContext('2d');
+    new Chart(avgInteractionsStartWarCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Average Interactions (Start of War)',
+                data: values,
+                borderColor: ['rgba(174,11,11,0.91)', "#aa0416", "rgba(174,11,11,0.91)"],
+                backgroundColor: ['rgba(181,20,25,0.83)', "rgba(174,11,11,0.91)", "rgba(181,20,25,0.83)"],
+                tension: 0.4,
+                borderWidth: 2.5,
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: "white" }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: {
+                        color: "white",
+                        callback: function (value) {
+                            if (value >= 1000) {
+                                return (value / 1000) + 'k';
+                            }
+                            return value;
+                        }
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Average Interactions by Sentiment (Start of War)',
+                    color: "white"
+                },
+                legend: {
+                    position: 'top'
+                },
+                tooltip: {
+                    enabled: true,
+                    backgroundColor: "black"
+                }
+            }
+        }
+    });
+}
 
 
 
