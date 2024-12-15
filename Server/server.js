@@ -74,7 +74,7 @@ app.get('/post-percentage', (req, res) => {
         FROM classification
         WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')
         GROUP BY classification.gpt_ukraine_for_imod
-        ORDER BY sentiment = 'For', 'Imod');`;
+        ORDER BY FIELD(sentiment, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
@@ -88,7 +88,7 @@ app.get('/avg-interactions', (req, res) => {
         JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
         WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')
         GROUP BY classification.gpt_ukraine_for_imod
-        ORDER BY sentiment = 'For', 'Imod'); `;
+            ORDER BY FIELD(sentiment, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
@@ -103,7 +103,7 @@ app.get('/avg-angrys', (req, res) => {
         JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
         WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')
         GROUP BY classification.gpt_ukraine_for_imod
-        ORDER BY sentiment = 'For', 'Imod');`;
+             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
@@ -118,7 +118,7 @@ app.get('/avg-interactions-by-sentiment-month', (req, res) => {
         JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
         JOIN time ON metrics.ccpost_id = time.ccpost_id
         GROUP BY classification.gpt_ukraine_for_imod, time.yearmonth
-        ORDER BY time.yearmonth, sentiment = 'For', 'Neutral', 'Imod');
+        ORDER BY time.yearmonth, FIELD(sentiment, 'For', 'Imod');
     `;
     connection.query(q, (error, results)=>{
         res.send(results);
@@ -133,7 +133,7 @@ JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
 JOIN time ON metrics.ccpost_id = time.ccpost_id
 WHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022
 GROUP BY classification.gpt_ukraine_for_imod
-ORDER BY sentiment = 'For', 'Neutral', 'Imod');`;
+             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
@@ -145,7 +145,7 @@ app.get('/avg-shares-by-sentiment', (req, res) => {
 FROM classification
 JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
 GROUP BY classification.gpt_ukraine_for_imod
-ORDER BY sentiment = 'For', 'Neutral', 'Imod');`;
+             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
@@ -159,7 +159,7 @@ JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
 JOIN time ON metrics.ccpost_id = time.ccpost_id
 WHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022
 GROUP BY classification.gpt_ukraine_for_imod
-ORDER BY sentiment = 'For', 'Neutral', 'Imod');`;
+             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
@@ -173,7 +173,7 @@ JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
 JOIN time ON metrics.ccpost_id = time.ccpost_id
 WHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022
 GROUP BY classification.gpt_ukraine_for_imod
-ORDER BY sentiment = 'For', 'Neutral', 'Imod');`;
+             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
