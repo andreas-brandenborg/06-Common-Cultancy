@@ -52,14 +52,14 @@ section {
 }
 
 #landing-page div:nth-child(even) {
-    background-color: #404040;
+    background-color: #000000;
     border-radius: 50px;
     height: 80vh;
     width: 0.35rem;
 }
 
 #landing-page > div > p:last-child {
-    color: grey;
+    color: #000000;
     font-style: italic;
 }
 #total-interactions-section {
@@ -70,35 +70,52 @@ section {
     width: 100%;
     height: 100vh;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
+
 #timeline {
     display: flex;
     flex-direction: column;
     flex: 1;
     padding: 2rem;
     overflow-y: auto;
-    position: sticky;
-    top: 0;
+    background-color: black;
     max-height: 100%;
-    background-color: #202020;
+    width: 100%;
 }
+
 #timelineImage {
     max-height: 14px;
     max-width: 14px;
 }
+
 #line-graph {
     flex: 2;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background-color: #101010;
+    background-color: black;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
 #line-graph canvas {
+    width: 100%;
+    height: auto;
     max-width: 100%;
-    max-height: 100%;
 }
+
+#timeline h1, #timeline p {
+    color: #fff;
+}
+
+#total-interactions-section {
+    position: relative;
+    overflow-x: hidden;
+}
+
 .negative-posts-section {
     display: flex;
     flex-direction: column;
@@ -114,14 +131,14 @@ section {
 .divider {
     width: 100%;
     height: 4px;
-    background-color: #404040;
+    background-color: black;
     margin: 2rem 0;
 }
 #timeline::-webkit-scrollbar {
     width: 10px;
 }
 #timeline::-webkit-scrollbar-track {
-    background-color: #202020;
+    background-color: grey;
 }
 #call-to-action-flex > h1 {
     text-align: center;
