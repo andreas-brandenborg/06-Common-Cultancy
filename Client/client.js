@@ -16,6 +16,7 @@ function getValues(data, valueKey) {
         datavalues.push(data[i][valueKey]); //
     }
     return datavalues; // Return the array
+
 }
 function getEndpointData(endpoint, labelKey, valueKey) {
     return fetch(endpoint) // tager en parameter endpoint og henter data
@@ -61,6 +62,8 @@ function displaySecondPost() {
             });
 }
  /*/
+
+
 function createChart(values,labels){
 
     const chart = new Chart(ctx, {
