@@ -185,6 +185,7 @@ section {
     display: flex;
     flex-direction: column;
     width: fit-content;
+
 }
 
 #social-media > div {
@@ -192,8 +193,10 @@ section {
     flex-direction: row;
     margin-bottom: 1rem;
     border-radius: 5px;
-    height: 4rem;
+    height: 3rem;
     cursor: pointer;
+    width: 19rem;
+
 }
 
 #social-media > div:nth-child(1) {
@@ -211,7 +214,7 @@ section {
 #social-media > div > img {
     height: 100%;
     width: 100%;
-    max-width: 40px;
+    max-width: 51px;
     object-fit: contain;
 }
 
