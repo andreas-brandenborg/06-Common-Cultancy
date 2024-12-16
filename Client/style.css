@@ -29,6 +29,7 @@ button#toggle-chart:hover {
 #title2{
     color: #ffffff;
 }
+
 h2 {
     font-size: 2.5rem;
     font-weight: 400;
@@ -93,7 +94,7 @@ section {
 #line-graph {
     position: sticky;
     bottom: 0;
-    height: 450px;
+    height: 350px;
     box-shadow: -2px -2px 20px black;
     background-color: black;
     padding: 1rem;

@@ -372,7 +372,7 @@ function createPieChartFor(labels, values) {
     new Chart(ctxFor, {
         type: 'pie',
         data: {
-            labels: ["For","Againts"],
+            labels: ["For","Against"],
             datasets: [{
                 label: 'hi',
                 data: values,
@@ -386,7 +386,7 @@ function createPieChartFor(labels, values) {
                 title: {
                     display: true,
 
-                    text: 'Percentages of posts againts or for Ukraine!',
+                    text: 'Percentages of posts against or for Ukraine!',
                     color: "white"
                 }
 
@@ -399,7 +399,7 @@ function createPieChartImod(labels, values) {
     new Chart(ctxImod, {
         type: 'pie',
         data: {
-            labels: ["For","Againts"],
+            labels: ["For","Against"],
             datasets: [{
                 label: 'Percentages of amount of posts!',
                 data: values,
@@ -488,7 +488,7 @@ function createBarChartImod(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Average Shares on Posts that are Againts',
+                    text: 'Average Shares on Posts that are Against',
                     color: "white"
                 },
                 tooltip: {
