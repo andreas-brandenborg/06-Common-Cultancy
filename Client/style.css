@@ -9,7 +9,13 @@ h1 {
     font-size: 3.5rem;
     font-weight: 500;
 }
+#title1 {
+    color: #B60104;
+}
 
+#title2{
+    color: #5D1F9AFF;
+}
 h2 {
     font-size: 2.5rem;
     font-weight: 400;
@@ -41,7 +47,10 @@ section {
 }
 
 #total-interactions-section {
-    background-color: black;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
 }
 #scrollButton {
     background-color: rgba(181, 20, 25, 0.83);
@@ -57,12 +66,26 @@ section {
     background-color: #5f1ba1;
 }
 #timeline {
-    margin-left: 19%;
-    max-width: 70%;
-    overflow-y: auto;
-    padding: 1rem;
-    border-left: 3px solid #404040;
-    position: center;
+    margin-bottom: 30px;
+}
+#2022, #2023, #2024 {
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+#2022 p, #2023 p, #2024 p {
+    margin-bottom: 10px;
+}
+#line-graph {
+    margin-top: 40px;
+    text-align: center;
+}
+
+#line-graph canvas {
+    max-width: 100%;
+    height: auto;
+    max-width: 750px;  /* Ensures it doesn't stretch beyond the container width */
 }
 
 #negative-posts-section {
@@ -70,7 +93,6 @@ section {
     background-color: black;
 }
 #line-graph {
-    margin-left: 19%;
     position: sticky;
     bottom: 0;
     height: 300px;

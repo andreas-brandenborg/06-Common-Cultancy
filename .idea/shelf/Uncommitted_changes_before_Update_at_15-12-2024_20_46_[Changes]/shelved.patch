@@ -1,0 +1,333 @@
+Index: Client/client.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>const ctx = document.querySelector('#chart1').getContext('2d');\r\nconst boxchart = document.querySelector(\"#chart2\").getContext(\"2d\")\r\nconst facebookDom = document.querySelector(\"#facebook\")\r\nconst linkedInDom = document.querySelector(\"#linkedin\")\r\nconst xDom = document.querySelector(\"#x\")\r\n\r\nconst colorOne=['rgba(174,11,11,0.91)', \"#aa0416\",  \"rgba(174,11,11,0.91)\"]\r\nconst colorTwo = ['rgba(181,20,25,0.83)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"]\r\n\r\n\r\nshowLineChart();\r\nshowSocialMediaBar();\r\nshowEconomicSupportBar();\r\nshowBoxChart()\r\nshowAvgSharesBySentiment();\r\nshowAvgInteractionsBySentimentStartWar();\r\ncreateDonutRings();\r\n\r\nfetchMonthData = [];\r\nfetchInteractions = [];\r\n\r\n//Handlers\r\n//handler for fetch data, loop af data, og push til array, fungerer på alle endpoints\r\nfunction getLabels(data, labelKey) {\r\n    let datalabels = []; // tomt array\r\n    for (let i = 0; i < data.length; i++) { // itererer gennem array af data fra mysql\r\n        datalabels.push(data[i][labelKey]); // array push alt med parametrne som er sql kolonne navn\r\n    }\r\n    return datalabels; // returnerer fyldte array\r\n}\r\n\r\nfunction getValues(data, valueKey) {\r\n    let datavalues = [];\r\n    for (let i = 0; i < data.length; i++) {\r\n        datavalues.push(data[i][valueKey]); //\r\n    }\r\n    return datavalues; // Return the array\r\n}\r\n\r\nfunction getEndpointData(endpoint, labelKey, valueKey) {\r\n    return fetch(endpoint) // tager en parameter endpoint og henter data\r\n        .then(response => response.json())\r\n        .then(data => {\r\n            const labels = getLabels(data, labelKey);// tager svaret json svar som params\r\n            const values = getValues(data, valueKey);// handlers der samler dataen til grafer\r\n            return { labels, values }; // returner et array af labels,values\r\n        })\r\n        .catch(error => {\r\n            console.error('Error fetching data:', error);\r\n        });\r\n}\r\n\r\nasync function showLineChart() {\r\n    const { labels, values } = await getEndpointData\r\n        (\"http://localhost:3000/total-interactions\",// endpoint for dataFetch fra sql\r\n         \"interactions_yearmonth\", //kolonne i sql med Labels, iterer gennem array push til labels\r\n         \"yearmonth\"); // rinse-repeat for Values\r\n    createChart(labels, values); // skaber charten med labelsne og valuesne\r\n    console.log(labels,values)\r\n}\r\n\r\nasync function showSocialMediaBar() {\r\n    const { labels, values } = await getEndpointData\r\n    (\"http://localhost:3000/social-media-posts\",// endpoint for dataFetch fra sql\r\n        \"interactions_year\", //kolonne i sql med Labels, iterer gennem array push til labels\r\n        \"year\"); // rinse-repeat for Values\r\n    createSocialMediaBar(labels, values); // skaber charten med labelsne og valuesne\r\n    console.log(labels,values)\r\n}\r\n\r\nasync function showEconomicSupportBar() {\r\n    const { labels, values } = await getEndpointData\r\n    (\"http://localhost:3000/economic-support\",// endpoint for dataFetch fra sql\r\n        \"sum(donation)\", //kolonne i sql med Labels, iterer gennem array push til labels\r\n        \"year\"); // rinse-repeat for Values\r\n    createEconomicSupportBar(labels, values); // skaber charten med labelsne og valuesne\r\n    console.log(labels,values)\r\n}\r\n\r\nasync function showBoxChart () {\r\n    const { labels, values } = await getEndpointData\r\n\r\n    (\"http://localhost:3000/negative-posts\",// endpoint for dataFetch fra sql\r\n        \"count(gpt_ukraine_for_imod)\", //kolonne i sql med Labels, iterer gennem array push til labels\r\n        \"gpt_ukraine_for_imod\"); // rinse-repeat for Values\r\n    BoxChart(labels, values); // skaber charten med labelsne og valuesne\r\n    console.log(labels,values)\r\n}\r\nasync function showAvgSharesBySentiment() {\r\n    const { labels, values } = await getEndpointData(\r\n        \"http://localhost:3000/avg-shares-by-sentiment\", // New endpoint\r\n        \"sentiment\", // Column in SQL for Labels\r\n        \"avg_shares\" // Column in SQL for Values\r\n    );\r\n    createAvgSharesChart(labels, values); // Create the chart with labels and values\r\n    console.log(labels, values);\r\n}\r\nasync function showAvgInteractionsBySentimentStartWar() {\r\n    const { labels, values } = await getEndpointData(\r\n        \"http://localhost:3000/avg-interactions-by-sentiment-start-war\", // New endpoint\r\n        \"sentiment\", // Column in SQL for Labels\r\n        \"avg_interactions\" // Column in SQL for Values\r\n    );\r\n    createAvgInteractionsStartWarChart(labels, values); // Create the chart with labels and values\r\n    console.log(labels, values);\r\n}\r\n/*/\r\ndisplaySecondPost();\r\n\r\nfunction displaySecondPost() {\r\n        fetch(\"http://localhost:3000/total-interactions\")\r\n            .then(response => response.json())\r\n            .then(data => {\r\n                    for (let i = 0; i < data.length; i++) {\r\n                            fetchMonthData.push(data[i].yearmonth);\r\n                            fetchInteractions.push(data[i].interactions_yearmonth);\r\n                    }\r\n                    createChart();\r\n            })\r\n            .catch(error => {\r\n                    console.error('Error fetching data:', error);\r\n            });\r\n}\r\n /*/\r\nfunction createChart(values,labels){\r\n\r\n    const chart = new Chart(ctx, {\r\n        type: 'line',\r\n        data: {\r\n            datasets: [{\r\n                label: 'Total interaktioner',\r\n                data: values, // Use the yValue array for the chart data\r\n                borderColor: ['rgba(174,11,11,0.91)', \"#aa0416\",  \"rgba(174,11,11,0.91)\"],\r\n                backgroundColor: ['rgba(181,20,25,0.83)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"],\r\n                tension: 0.4,\r\n                borderWidth: 2.5,\r\n                fill: true\r\n            }],\r\n            labels: labels // Use the xValue array for the chart labels\r\n        },\r\n        options: {\r\n            scales: {\r\n                x: {\r\n                    grid: {\r\n                        display: false\r\n                    },\r\n                    ticks: {\r\n                        color: \"white\"\r\n                    }\r\n                },\r\n                y: {\r\n                    grid: {\r\n                        display: false\r\n                    },\r\n                    ticks: {\r\n                        color: \"white\",\r\n                        callback: function (value, index, values) {\r\n                            if (value >= 1000000) {\r\n                                return (value / 1000000) + ' mil';\r\n                            }\r\n                            return value;\r\n                        }\r\n                    }\r\n                }\r\n            },\r\n            plugins: {\r\n                title: {\r\n                    display: true,\r\n                    text: 'Total interaktioner',\r\n                    color: \"white\"\r\n                },\r\n                legend: {\r\n                    position: 'line'\r\n                },\r\n                tooltip: {\r\n                    enabled: true,\r\n                    backgroundColor: \"black\"\r\n                }\r\n            }\r\n        }\r\n    });\r\n}\r\n\r\nfunction createSocialMediaBar(values, labels) {\r\n    // For some reason, we can't have this as a global variable.\r\n    const socialMediaBar = document.querySelector(\"#social-media-bar\").getContext('2d');\r\n    const chart = new Chart(socialMediaBar, {\r\n        type: 'bar',\r\n        data: {\r\n            datasets: [{\r\n                label: 'Total Social Media Interactions',\r\n                 data: values,\r\n                borderColor: ['rgba(174,11,11,0.91)', \"#aa0416\",  \"rgba(174,11,11,0.91)\"],\r\n                backgroundColor: ['rgba(181,20,25,0.83)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"],\r\n                tension: 0.4,\r\n                borderWidth: 2.5,\r\n                fill: true\r\n            }],\r\n            labels: labels\r\n        },\r\n        options: {\r\n            scales: {\r\n                x: {\r\n                    grid: {\r\n                        display: false\r\n                    },\r\n                    ticks: {\r\n                        color: \"white\"\r\n                    }\r\n                },\r\n                y: {\r\n                    grid: {\r\n                        display: false\r\n                    },\r\n                    ticks: {\r\n                        color: \"white\",\r\n                        callback: function (value, index, values) {\r\n                            if (value >= 1000000) {\r\n                                return (value / 1000000) + ' mil';\r\n                            }\r\n                            return value;\r\n                        }\r\n                    }\r\n                }\r\n            },\r\n            plugins: {\r\n                title: {\r\n                    display: true,\r\n                    text: 'Social Media Interactions',\r\n                },\r\n                legend: {\r\n                    position: ''\r\n                },\r\n                tooltip: {\r\n                    enabled: true,\r\n                    backgroundColor: \"black\"\r\n                }\r\n            }\r\n        }\r\n    });\r\n}\r\n\r\nfunction createEconomicSupportBar(values, labels) {\r\n    // For some reason, we can't have this as a global variable.\r\n    const socialMediaBar = document.querySelector(\"#economic-support-bar\").getContext('2d');\r\n    const chart = new Chart(socialMediaBar, {\r\n        type: 'bar',\r\n        data: {\r\n            datasets: [{\r\n                label: 'Economic Support',\r\n                data: values,\r\n                borderColor: ['rgba(174,11,11,0.91)', \"#aa0416\",  \"rgba(174,11,11,0.91)\"],\r\n                backgroundColor: ['rgba(181,20,25,0.83)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"],\r\n                tension: 0.4,\r\n                borderWidth: 2.5,\r\n                fill: true\r\n            }],\r\n            labels: labels\r\n        },\r\n        options: {\r\n            scales: {\r\n                x: {\r\n                    grid: {\r\n                        display: false\r\n                    },\r\n                    ticks: {\r\n                        color: \"white\"\r\n                    }\r\n                },\r\n                y: {\r\n                    grid: {\r\n                        display: false\r\n                    },\r\n                    ticks: {\r\n                        color: \"white\",\r\n                        callback: function (value, index, values) {\r\n                            if (value >= 1000000) {\r\n                                return (value / 1000000) + ' mil';\r\n                            }\r\n                            return value;\r\n                        }\r\n                    }\r\n                }\r\n            },\r\n            plugins: {\r\n                title: {\r\n                    display: true,\r\n                    text: 'Economic Support',\r\n                },\r\n                legend: {\r\n                    position: ''\r\n                },\r\n                tooltip: {\r\n                    enabled: true,\r\n                    backgroundColor: \"black\"\r\n                }\r\n            }\r\n        }\r\n    });\r\n}\r\nfunction BoxChart(values, labels) {\r\n    const chart = new Chart(boxchart, {\r\n        type: \"bar\",\r\n        data: {\r\n            labels: [\"Against\", \"For\", \"Neutral\"],\r\n            datasets: [{\r\n                data: values,\r\n                label: \"Distribution of affility\",\r\n                borderColor: ['rgba(174,11,11,0.91)', \"#aa0416\",  \"rgba(174,11,11,0.91)\"],\r\n                backgroundColor: ['rgba(181,20,25,0.83)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"],\r\n                tension: 0.4,\r\n                borderWidth: 2.5,\r\n                fill: true\r\n            }]\r\n\r\n        },\r\n        options: {\r\n            scales: {\r\n                y: {\r\n                    ticks: {\r\n                        color: \"white\",\r\n                        callback: function (value, index, values) {\r\n                            if (value >= 1000) {\r\n                                return (value / 1000) + ' thsd';\r\n                            }\r\n                            return value;\r\n                        }\r\n                    }\r\n                },\r\n                x: {\r\n                    ticks: {\r\n                        color: \"white\"\r\n                    }\r\n                }\r\n            },\r\n            plugins: {\r\n                title: {\r\n                    display: false\r\n                },\r\n                legend: {\r\n                    display: false\r\n                }\r\n            }\r\n        }\r\n    })\r\n}\r\nasync function createDonutRings() {\r\n    const stackedDonut = document.getElementById('stackedDonutChart').getContext('2d');\r\n\r\n    try {\r\n        // Fetch data from endpoints\r\n        const postPercentageData = await getEndpointData('http://localhost:3000/post-percentage', 'sentiment', 'post_percentage');\r\n        const avgInteractionsData = await getEndpointData('http://localhost:3000/avg-interactions', 'sentiment', 'avg_interactions');\r\n        const avgAngrysData = await getEndpointData('http://localhost:3000/avg-angrys', 'sentiment', 'avg_angrys');\r\n\r\n        const labels = postPercentageData.labels;\r\n        const postPercentages = postPercentageData.values; // Ring 1 data\r\n        const avgInteractions = avgInteractionsData.values; // Ring 2 data\r\n        const avgAngrys = avgAngrysData.values; // Ring 3 data\r\n\r\n        const firstOrder = [postPercentages, avgAngrys, avgInteractions];\r\n        const secondOrder = [avgInteractions, avgAngrys, postPercentages];\r\n\r\n        new Chart(stackedDonut, {\r\n            type: 'doughnut',\r\n            data: {\r\n                labels: labels,\r\n                datasets: [\r\n                    {\r\n                        // Ring 1: Percentages of Posts\r\n                        label: 'Post Percentage',\r\n                        data: firstOrder[0], // First ring data\r\n                        borderColor: ['rgb(95,27,161)', \"rgba(181,20,25,0.83)\", \"rgb(93,31,154)\"],\r\n                        backgroundColor: ['rgb(95,27,161)', \"rgba(174,11,11,0.91)\", \"rgb(95,27,161)\"],\r\n                        hoverOffset: 4,\r\n                        radius: '25%',\r\n                    },\r\n                    {\r\n                        // Ring 2: Average Engagement\r\n                        label: 'Average Interactions',\r\n                        data: secondOrder[0], // Second ring data\r\n                        borderColor: ['rgb(95,27,161)', \"#aa0416\", \"rgba(174,11,11,0.91)\"],\r\n                        backgroundColor: ['rgb(95,27,161)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"],\r\n                        hoverOffset: 4,\r\n                        radius: ['30%', '65%'],\r\n                    },\r\n                    {\r\n                        // Ring 3: Average Angry Reactions\r\n                        label: 'Average Angry Reactions',\r\n                        data: secondOrder[2], // Third ring data\r\n                        borderColor: ['rgb(95,27,161)', \"#aa0416\", \"rgba(174,11,11,0.91)\"],\r\n                        backgroundColor: ['rgb(93,31,154)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"],\r\n                        hoverOffset: 4,\r\n                        radius: ['70%', '85%'],\r\n                    },\r\n                ],\r\n            },\r\n            options: {\r\n                responsive: true,\r\n                plugins: {\r\n                    legend: {\r\n                        position: 'top',\r\n                        labels: {\r\n                            font: {\r\n                                size: 14,\r\n                            },\r\n                        },\r\n                    },\r\n                    title: {\r\n                        display: true,\r\n                        text: 'Posts, Engagement, and Angry Reactions by Sentiment',\r\n                    },\r\n                },\r\n                layout: {\r\n                    padding: {\r\n                        top: 10,\r\n                        bottom: 10,\r\n                    },\r\n                },\r\n            },\r\n        });\r\n    } catch (error) {\r\n        console.error('Error creating donut chart:', error);\r\n    }\r\n}\r\n\r\n\r\n\r\nfunction createAvgSharesChart(labels, values) {\r\n    const avgSharesCtx = document.querySelector('#chart3').getContext('2d');\r\n    new Chart(avgSharesCtx, {\r\n        type: 'bar',\r\n        data: {\r\n            labels: labels,\r\n            datasets: [{\r\n                label: 'Average Shares',\r\n                data: values,\r\n                borderColor: ['rgba(174,11,11,0.91)', \"#aa0416\", \"rgba(174,11,11,0.91)\"],\r\n                backgroundColor: ['rgba(181,20,25,0.83)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"],\r\n                tension: 0.4,\r\n                borderWidth: 2.5,\r\n                fill: true\r\n            }]\r\n        },\r\n        options: {\r\n            scales: {\r\n                x: {\r\n                    grid: { display: false },\r\n                    ticks: { color: \"white\" }\r\n                },\r\n                y: {\r\n                    grid: { display: false },\r\n                    ticks: {\r\n                        color: \"white\",\r\n                        callback: function (value) {\r\n                            if (value >= 1000) {\r\n                                return (value / 1000) + 'k';\r\n                            }\r\n                            return value;\r\n                        }\r\n                    }\r\n                }\r\n            },\r\n            plugins: {\r\n                title: {\r\n                    display: true,\r\n                    text: 'Average Shares by Sentiment',\r\n                    color: \"white\"\r\n                },\r\n                legend: {\r\n                    position: 'top'\r\n                },\r\n                tooltip: {\r\n                    enabled: true,\r\n                    backgroundColor: \"black\"\r\n                }\r\n            }\r\n        }\r\n    });\r\n}\r\nfunction createAvgInteractionsStartWarChart(labels, values) {\r\n    const avgInteractionsStartWarCtx = document.querySelector('#chart4').getContext('2d');\r\n    new Chart(avgInteractionsStartWarCtx, {\r\n        type: 'line',\r\n        data: {\r\n            labels: labels,\r\n            datasets: [{\r\n                label: 'Average Interactions (Start of War)',\r\n                data: values,\r\n                borderColor: ['rgba(174,11,11,0.91)', \"#aa0416\", \"rgba(174,11,11,0.91)\"],\r\n                backgroundColor: ['rgba(181,20,25,0.83)', \"rgba(174,11,11,0.91)\", \"rgba(181,20,25,0.83)\"],\r\n                tension: 0.4,\r\n                borderWidth: 2.5,\r\n                fill: true\r\n            }]\r\n        },\r\n        options: {\r\n            scales: {\r\n                x: {\r\n                    grid: { display: false },\r\n                    ticks: { color: \"white\" }\r\n                },\r\n                y: {\r\n                    grid: { display: false },\r\n                    ticks: {\r\n                        color: \"white\",\r\n                        callback: function (value) {\r\n                            if (value >= 1000) {\r\n                                return (value / 1000) + 'k';\r\n                            }\r\n                            return value;\r\n                        }\r\n                    }\r\n                }\r\n            },\r\n            plugins: {\r\n                title: {\r\n                    display: true,\r\n                    text: 'Average Interactions by Sentiment (Start of War)',\r\n                    color: \"white\"\r\n                },\r\n                legend: {\r\n                    position: 'top'\r\n                },\r\n                tooltip: {\r\n                    enabled: true,\r\n                    backgroundColor: \"black\"\r\n                }\r\n            }\r\n        }\r\n    });\r\n}\r\n\r\n\r\n\r\n// buttons til share på sociale medier.\r\n\r\nfacebookDom.addEventListener(\"click\", function() {\r\n    document.location.href = `https://www.facebook.com/share.php?=`\r\n} )\r\n\r\nlinkedInDom.addEventListener(\"click\", function() {\r\n    document.location.href = `https://www.linkedin.com/article/new/`\r\n} )\r\nxDom.addEventListener(\"click\", function() {\r\n    document.location.href = `https://x.com/compose/post`\r\n} )\r\n\r\n\r\n\r\n\r\n\r\n /*\r\n\r\n\r\n\r\n\r\n\r\nlet fetchMonthData = [];\r\nlet fetchInteractions = [];\r\nlet chart; // Global chart instance\r\nlet visiblePoints = 5; // Initial number of points to show\r\nconst scrollStep = 0.1; // Amount of points to add/remove per scroll\r\nlet scrollAccumulator = 0; // Accumulator for scroll events\r\n\r\n\r\n// Fetch data from your endpoint\r\nasync function displaySecondPost() {\r\n    fetch(\"http://localhost:3000/total-interactions\")\r\n        .then(response => response.json())\r\n        .then(data => {\r\n            for (let i = 0; i < data.length; i++) {\r\n                fetchMonthData.push(data[i].yearmonth);\r\n                fetchInteractions.push(data[i].interactions_yearmonth);\r\n            }\r\n            createChart(); // Create chart after data is loaded\r\n        })\r\n        .catch(error => {\r\n            console.error('Error fetching data:', error);\r\n        });\r\n}\r\n\r\n\r\n// Function to create the chart\r\nfunction createChart() {\r\n    const ctx = document.querySelector('#chart').getContext('2d');\r\n    chart = new Chart(ctx, {\r\n        type: 'line',\r\n        data: {\r\n            datasets: [{\r\n                label: 'Total interaktioner',\r\n                data: fetchInteractions.slice(0, visiblePoints), // Start with a few points\r\n                borderColor: ['#B60104'],\r\n                backgroundColor: \"rgba(182, 1, 4, 0.2)\",\r\n                tension: 0.4,\r\n                borderWidth: 4\r\n            }],\r\n            labels: fetchMonthData.slice(0, visiblePoints) // Start with matching labels\r\n        },\r\n        options: {\r\n            scales: {\r\n                x: {\r\n                    grid: {\r\n                        display: false\r\n                    }\r\n                },\r\n                y: {\r\n                    grid: {\r\n                        display: false\r\n                    }\r\n                }\r\n            },\r\n            plugins: {\r\n                title: {\r\n                    display: true,\r\n                    text: 'Total interaktioner',\r\n                    color: \"white\"\r\n                },\r\n                legend: {\r\n                    position: '',\r\n                    labels: {\r\n                        color:\"white\"\r\n                    }\r\n                    },\r\n                tooltip: {\r\n                    enabled: true,\r\n                    backgroundColor: \"black\"\r\n                }\r\n            }\r\n        }\r\n    });\r\n}\r\n\r\n\r\n\r\n\r\n// Function to progressively reveal more points on scroll\r\nfunction updateChartOnScroll(event) {\r\n    // Accumulate the scroll delta\r\n    scrollAccumulator += event.deltaY > 0 ? scrollStep : -scrollStep;\r\n\r\n    // Only update visiblePoints when scrollAccumulator crosses a threshold\r\n    if (Math.abs(scrollAccumulator) >= 1) {\r\n        const change = Math.floor(scrollAccumulator); // Get the integer part of the accumulated scroll\r\n        scrollAccumulator -= change; // Remove the processed amount\r\n\r\n        // Update visiblePoints with the change and clamp within valid bounds\r\n        visiblePoints = Math.min(\r\n            fetchMonthData.length, // Max points available\r\n            Math.max(5, visiblePoints + change) // At least 5 points visible\r\n        );\r\n\r\n        // Update the chart data with the new range\r\n        chart.data.labels = fetchMonthData.slice(0, visiblePoints);\r\n        chart.data.datasets[0].data = fetchInteractions.slice(0, visiblePoints);\r\n\r\n        // Update the chart display\r\n        chart.update();\r\n    }\r\n}\r\n\r\n// Listen for scroll events\r\nwindow.addEventListener('wheel', updateChartOnScroll);\r\n\r\n// Fetch data and initialize chart\r\ndisplaySecondPost();\r\n\r\n\r\n\r\n  */\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/client.js b/Client/client.js
+--- a/Client/client.js	(revision 0e2921e870efbe20cf175a7e7b3d037059383d80)
++++ b/Client/client.js	(date 1734291941185)
+@@ -79,7 +79,6 @@
+ 
+ async function showBoxChart () {
+     const { labels, values } = await getEndpointData
+-
+     ("http://localhost:3000/negative-posts",// endpoint for dataFetch fra sql
+         "count(gpt_ukraine_for_imod)", //kolonne i sql med Labels, iterer gennem array push til labels
+         "gpt_ukraine_for_imod"); // rinse-repeat for Values
+Index: Server/server.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>const express = require('express');\r\nconst cors = require('cors');\r\nconst db = require('mysql2');\r\n\r\nconst app = express();\r\nconst port = 3000;\r\n\r\napp.use(cors());\r\napp.use(express.json());\r\n\r\nconst connection = db.createConnection({\r\n    host: \"localhost\",\r\n    user: \"root\",\r\n    password: process.env.dbpassword,\r\n    database: \"facebook\"\r\n});\r\n\r\napp.get('/test',(req,res)=> {\r\n    let q = `SELECT * FROM classification LIMIT 1`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\n\r\n// Result: [{\"yearmonth\": \"2019-01\", \"interactions_yearmonth\": \"110\"}, ...]\r\napp.get('/total-interactions',(req,res)=> {\r\n    let q = `SELECT yearmonth, SUM(total_interactions) as interactions_yearmonth\r\n                    FROM metrics\r\n                    INNER JOIN time ON time.ccpost_id = metrics.ccpost_id\r\n                    Where yearmonth > 2021\r\n                    GROUP BY yearmonth\r\n                    ORDER BY yearmonth;`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\n\r\napp.get('/negative-posts',(req,res)=> {\r\n    let q = `select count(gpt_ukraine_for_imod), gpt_ukraine_for_imod\r\n                    from classification\r\n                    group by gpt_ukraine_for_imod\r\n                    order by count(gpt_ukraine_for_imod) asc`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\n\r\napp.get('/economic-support',(req,res)=> {\r\n    let q = `select sum(donation), year \r\n                    from economic_support\r\n                    group by year`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\n\r\napp.get('/social-media-posts',(req,res)=> {\r\n    let q = `SELECT year, SUM(total_interactions) as interactions_year\r\n                    FROM metrics\r\n                    INNER JOIN time ON time.ccpost_id = metrics.ccpost_id\r\n                    Where yearmonth > 2021\r\n                    GROUP BY year\r\n                    ORDER BY year;`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\napp.get('/post-percentage', (req, res) => {\r\n    const q = `\r\n        SELECT \r\n            classification.gpt_ukraine_for_imod AS sentiment,\r\n            COUNT(classification.ccpost_id) * 100.0 / \r\n            (SELECT COUNT(*) FROM classification WHERE gpt_ukraine_for_imod IN ('For', 'Imod')) AS post_percentage\r\n        FROM classification\r\n        WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')\r\n        GROUP BY classification.gpt_ukraine_for_imod\r\n        ORDER BY FIELD(sentiment, 'For', 'Imod');`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\napp.get('/avg-interactions', (req, res) => {\r\n    const q = `\r\n        SELECT \r\n            classification.gpt_ukraine_for_imod AS sentiment,\r\n            AVG(metrics.total_interactions) AS avg_interactions\r\n        FROM classification\r\n        JOIN metrics ON classification.ccpost_id = metrics.ccpost_id\r\n        WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')\r\n        GROUP BY classification.gpt_ukraine_for_imod\r\n            ORDER BY FIELD(sentiment, 'For', 'Imod');`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\n\r\napp.get('/avg-angrys', (req, res) => {\r\n    const q = `\r\n        SELECT \r\n            classification.gpt_ukraine_for_imod AS sentiment,\r\n            AVG(metrics.angrys) AS avg_angrys\r\n        FROM classification\r\n        JOIN metrics ON classification.ccpost_id = metrics.ccpost_id\r\n        WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')\r\n        GROUP BY classification.gpt_ukraine_for_imod\r\n             ORDER BY FIELD(sentiment, 'For', 'Imod');`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\napp.get('/avg-interactions-by-sentiment-month', (req, res) => {\r\n    const q = `\r\n        SELECT \r\n            classification.gpt_ukraine_for_imod AS sentiment,\r\n            time.yearmonth,\r\n            AVG(metrics.total_interactions) AS avg_interactions\r\n        FROM classification\r\n        JOIN metrics ON classification.ccpost_id = metrics.ccpost_id\r\n        JOIN time ON metrics.ccpost_id = time.ccpost_id\r\n        GROUP BY classification.gpt_ukraine_for_imod, time.yearmonth\r\n        ORDER BY time.yearmonth, FIELD(sentiment, 'For', 'Imod');\r\n    `;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\napp.get('/avg-interactions-by-sentiment-start-war', (req, res) => {\r\n    const q = `SELECT \r\n    classification.gpt_ukraine_for_imod AS sentiment,\r\n    AVG(metrics.total_interactions) AS avg_interactions\r\nFROM classification\r\nJOIN metrics ON classification.ccpost_id = metrics.ccpost_id\r\nJOIN time ON metrics.ccpost_id = time.ccpost_id\r\nWHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022\r\nGROUP BY classification.gpt_ukraine_for_imod\r\n             ORDER BY FIELD(sentiment, 'For', 'Imod');`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\napp.get('/avg-shares-by-sentiment', (req, res) => {\r\n    const q = `SELECT \r\n    classification.gpt_ukraine_for_imod AS sentiment,\r\n    AVG(metrics.shares) AS avg_shares\r\nFROM classification\r\nJOIN metrics ON classification.ccpost_id = metrics.ccpost_id\r\nGROUP BY classification.gpt_ukraine_for_imod\r\n             ORDER BY FIELD(sentiment, 'For', 'Imod');`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\napp.get('/avg-interactions-by-sentiment-start-war', (req, res) => {\r\n    const q = `SELECT \r\n    classification.gpt_ukraine_for_imod AS sentiment,\r\n    AVG(metrics.total_interactions) AS avg_interactions\r\nFROM classification\r\nJOIN metrics ON classification.ccpost_id = metrics.ccpost_id\r\nJOIN time ON metrics.ccpost_id = time.ccpost_id\r\nWHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022\r\nGROUP BY classification.gpt_ukraine_for_imod\r\n             ORDER BY FIELD(sentiment, 'For', 'Imod');`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\napp.get('/avg-interactions-by-sentiment-start-war', (req, res) => {\r\n    const q = `SELECT \r\n    classification.gpt_ukraine_for_imod AS sentiment,\r\n    AVG(metrics.total_interactions) AS avg_interactions\r\nFROM classification\r\nJOIN metrics ON classification.ccpost_id = metrics.ccpost_id\r\nJOIN time ON metrics.ccpost_id = time.ccpost_id\r\nWHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022\r\nGROUP BY classification.gpt_ukraine_for_imod\r\n             ORDER BY FIELD(sentiment, 'For', 'Imod');`;\r\n    connection.query(q, (error, results)=>{\r\n        res.send(results);\r\n    })\r\n});\r\n// Start server. Needs to be below end points.\r\napp.listen(port, ()=>{\r\n    console.log(\"Hey guys we are officially LIVE !!!!\");\r\n});
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Server/server.js b/Server/server.js
+--- a/Server/server.js	(revision 0e2921e870efbe20cf175a7e7b3d037059383d80)
++++ b/Server/server.js	(date 1734285691522)
+@@ -65,9 +65,9 @@
+         res.send(results);
+     })
+ });
+-app.get('/post-percentage', (req, res) => {
+-    const q = `
+-        SELECT 
++// post percantage for / imod
++app.get('/post-percentages', (req, res) => {
++    const q = `SELECT 
+             classification.gpt_ukraine_for_imod AS sentiment,
+             COUNT(classification.ccpost_id) * 100.0 / 
+             (SELECT COUNT(*) FROM classification WHERE gpt_ukraine_for_imod IN ('For', 'Imod')) AS post_percentage
+@@ -79,31 +79,66 @@
+         res.send(results);
+     })
+ });
+-app.get('/avg-interactions', (req, res) => {
++// enagement percentage for imod
++app.get('/engagement-percentages', (req, res) => {
+     const q = `
+         SELECT 
+             classification.gpt_ukraine_for_imod AS sentiment,
+-            AVG(metrics.total_interactions) AS avg_interactions
++            avg(metrics.total_interactions) * 100.0 / 
++            (SELECT avg(metrics.total_interactions) 
++             FROM classification
++             JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
++             WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')) AS engagement_percentage
+         FROM classification
+         JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
+         WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')
+         GROUP BY classification.gpt_ukraine_for_imod
+-            ORDER BY FIELD(sentiment, 'For', 'Imod');`;
++        ORDER BY FIELD(sentiment, 'For', 'Imod');`;
+     connection.query(q, (error, results)=>{
+         res.send(results);
+     })
+ });
+ 
+-app.get('/avg-angrys', (req, res) => {
++app.get('/avg-shares-for', (req, res) => {
+     const q = `
+         SELECT 
++            time.year,
++            AVG(metrics.shares) AS avg_shares
++        FROM classification
++        JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
++        JOIN time ON metrics.ccpost_id = time.ccpost_id
++        WHERE classification.gpt_ukraine_for_imod = 'For' AND time.year IN (2022, 2023, 2024)
++        GROUP BY time.year
++        ORDER BY time.year;`;
++    connection.query(q, (error, results)=>{
++        res.send(results);
++    })
++});
++app.get('/avg-shares-imod', (req, res) => {
++    const q = `
++        SELECT 
++            time.year,
++            AVG(metrics.shares) AS avg_shares
++        FROM classification
++        JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
++        JOIN time ON metrics.ccpost_id = time.ccpost_id
++        WHERE classification.gpt_ukraine_for_imod = 'Imod' AND time.year IN (2022, 2023, 2024)
++        GROUP BY time.year
++        ORDER BY time.year;`;
++    connection.query(q, (error, results)=>{
++        res.send(results);
++    })
++});
++app.get('/avg-angry-reactions', (req, res) => {
++    const query = `
++        SELECT 
+             classification.gpt_ukraine_for_imod AS sentiment,
+-            AVG(metrics.angrys) AS avg_angrys
++            AVG(metrics.angrys) AS angry_count
+         FROM classification
+         JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
+         WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')
+         GROUP BY classification.gpt_ukraine_for_imod
+-             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
++        ORDER BY FIELD(sentiment, 'For', 'Imod');`;
+     connection.query(q, (error, results)=>{
+         res.send(results);
+     })
+@@ -150,20 +185,7 @@
+         res.send(results);
+     })
+ });
+-app.get('/avg-interactions-by-sentiment-start-war', (req, res) => {
+-    const q = `SELECT 
+-    classification.gpt_ukraine_for_imod AS sentiment,
+-    AVG(metrics.total_interactions) AS avg_interactions
+-FROM classification
+-JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
+-JOIN time ON metrics.ccpost_id = time.ccpost_id
+-WHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022
+-GROUP BY classification.gpt_ukraine_for_imod
+-             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
+-    connection.query(q, (error, results)=>{
+-        res.send(results);
+-    })
+-});
++
+ app.get('/avg-interactions-by-sentiment-start-war', (req, res) => {
+     const q = `SELECT 
+     classification.gpt_ukraine_for_imod AS sentiment,
+@@ -178,7 +200,6 @@
+         res.send(results);
+     })
+ });
+-// Start server. Needs to be below end points.
+ app.listen(port, ()=>{
+     console.log("Hey guys we are officially LIVE !!!!");
+ });
+\ No newline at end of file
+Index: Client/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!doctype html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n    <title>Ukraine 2024</title>\r\n    <link rel=\"icon\" type=\"image/x-icon\" href=\"/Media/Flag_of_Ukraine.png\">\r\n    <link rel=\"stylesheet\" href=\"style.css\">\r\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap\" rel=\"stylesheet\">\r\n    <script src=\"https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js\"></script>\r\n</head>\r\n<body>\r\n    <section id=\"landing-page\">\r\n        <div>\r\n\r\n        </div>\r\n        <div>\r\n\r\n        </div>\r\n        <div>\r\n            <h1>Russia Invades Ukraine</h1>\r\n            <p>Thursday, February 24th 2022, Ukraine is invaded by Russia.<br>\r\n                The media is flooded with posts, prayers, and fundraisers - the World wants to help!<br>\r\n                Years go by and the war continues; unfortunately, media coverage does not. While Ukraine fights on against the largest country on Earth, social media moves on.\r\n            </p>\r\n            <p>The purpose of this website is to highlight the development <!-- Et bedre ord for 'udvikling'? --> of social media interactions on posts concerning the war in Ukraine.</p>\r\n            <p><br>Created by Andreas Brandenborg, Magnus Giemsa, Laurits Munk, and Victor Lotz.</p>\r\n        </div>\r\n    </section>\r\n    <section id=\"total-interactions-section\">\r\n        <div id=\"timeline\">\r\n            <h1>Timeline of the Invasion</h1>\r\n            <p>The following is a timeline of the war and the development of total interactions on Facebook.</p>\r\n            <div id=\"2022\">\r\n                <h1>The Deceptive Drills: The Build-up Begins</h1>\r\n                <p>Russia’s tanks moved toward Ukraine’s border, disguised as military drills. The world was on edge as the clock ticked down. It wasn’t a question of “if” anymore—it was a question of “when.”</p>\r\n                <img src=\"/meme1.jpg\" alt=\"Russia invades Ukraine\" />\r\n            </div>\r\n\r\n            <img src=\"/meme1.jpg\" height=\"1690\" width=\"1600\"/>\r\n            <div id=\"2022\">\r\n                <h1>The Geneva Ultimatum</h1>\r\n                <p>In Geneva, Russia demanded Ukraine stay out of NATO. A simple demand that set the gears of war in motion. Diplomatic efforts failed, and the world watched as Russia began its deadly march forward.</p>\r\n                <img src=\"images/meme2\" alt=\"Diplomatic Failure\" />\r\n            </div>\r\n\r\n            <div id=\"2022\">\r\n                <h1>History Repeats: Crimea’s Annexation</h1>\r\n                <p>Putin’s playbook from 2014 was the same: force, manipulation, and annexation. This time, it was Ukraine. The world was shocked, but Russia moved forward, taking the first step toward a broader conflict.</p>\r\n                <img src=\"/meme2.jpg\" alt=\"Crimea annexation\" />\r\n            </div>\r\n\r\n            <div id=\"2022\">\r\n                <h1>A Nation Under Attack</h1>\r\n                <p>The invasion was no longer a threat. It was a reality. As Russian missiles tore through Ukrainian cities, the country faced its darkest hour. Families were torn apart, but the spirit of Ukraine remained unbroken.</p>\r\n                <img src=\"/meme1.jpg\" alt=\"Ukraine under attack\" />\r\n            </div>\r\n\r\n            <div id=\"2022\">\r\n                <h1>Zelenskyy’s Defiance</h1>\r\n                <p>With Russian forces closing in, President Zelenskyy rejected the offer to flee. “I need ammunition, not a ride,” he said. His defiance echoed across the world and became the battle cry for a nation’s fight for freedom.</p>\r\n                <img id=\"timelineImage\" src=\"/meme2.jpg\" alt=\"Zelenskyy stays\" />\r\n            </div>\r\n\r\n            <div id=\"2022\">\r\n                <h1>Snake Island: ‘Russian Warship, Go F* Yourself’</h1>\r\n                <p>On Snake Island, Ukrainian soldiers gave a simple, defiant answer to Russia’s demand to surrender: “Russian warship, go f* yourself.” The soldiers became heroes, and their words rang out as a symbol of resistance.</p>\r\n                <img src=\"images/meme2\" alt=\"Snake Island defiance\" />\r\n            </div>\r\n            <div id=\"2022\">\r\n                <h1>Crisis at Chernobyl</h1>\r\n                <p>In the early days of the war, Russia took control of the Chernobyl nuclear power plant. The occupation exposed Russian troops to dangerous radiation, and the risk of environmental disaster loomed over Europe. The world watched as the dark history of Chernobyl resurfaced in the midst of war.</p>\r\n                <img src=\"images/meme1\" alt=\"Chernobyl occupation\" />\r\n            </div>\r\n\r\n            <div id=\"2022\">\r\n                <h1>Kherson Falls</h1>\r\n                <p>The first major city, Kherson, fell to Russian forces. But even under occupation, the spirit of the people remained. Their resistance was fierce, and they refused to be conquered.</p>\r\n                <img src=\"images/meme1\" alt=\"Kherson resistance\" />\r\n            </div>\r\n\r\n            <div id=\"2022\">\r\n                <h1>Moskva Sunk: A Naval Defeat</h1>\r\n                <p>Ukraine struck Russia’s flagship, the Moskva, sinking it in April. The loss shattered the myth of Russian invincibility. This was a moment of pride for Ukraine, and a heavy blow to Russia’s naval power.</p>\r\n                <img src=\"images/meme2.jpg\" alt=\"Moskva sunk\" />\r\n            </div>\r\n            <div id=\"2022\">\r\n                <h1>Nord Stream Pipeline Sabotage: A Strategic Blow</h1>\r\n                <p>In September 2022, explosions rocked the Nord Stream pipelines, a major source of Russian gas to Europe. While the culprits remained unknown, the attack was widely viewed as a blow to Russian energy power. It marked a critical shift in the conflict, highlighting Ukraine’s ability to strike deep into Russia’s infrastructure.</p>\r\n                <img src=\"images/meme2\" alt=\"Nord Stream explosion\" />\r\n            </div>\r\n            <div id=\"2023\">\r\n                <h1>The Counteroffensive Begins</h1>\r\n                <p>After months of preparation, Ukraine launched a counteroffensive. Armed with Western weapons, they pushed back Russian forces and reclaimed critical territories. The tide of war began to shift.</p>\r\n                <img src=\"images/meme1\" alt=\"Counteroffensive begins\" />\r\n            </div>\r\n            <div id=\"2023\">\r\n                <h1>Winter Hardships</h1>\r\n                <p>Winter came, and with it, Russia’s attempt to break Ukraine’s resolve through power outages and missile strikes. But Ukrainians gathered in basements, lit candles, and sang carols. The spirit of the nation could not be extinguished.</p>\r\n                <img src=\"images/meme2\" alt=\"Winter resilience\" />\r\n            </div>\r\n            <div id=\"2023\">\r\n                <h1>Crimean Bridge Attack</h1>\r\n                <p>Ukraine delivered a blow to Russia’s logistical backbone, blowing up the Crimean Bridge. This attack disrupted Russian supplies and was a reminder that Ukraine could strike deep into enemy territory.</p>\r\n                <img src=\"images/meme1\" alt=\"Crimean bridge attack\" />\r\n            </div>\r\n            <div id=\"2023\">\r\n                <h1>Global Solidarity</h1>\r\n                <p>As the war continued, Ukraine’s allies stepped up. NATO sent weapons, supplies, and moral support. The world stood with Ukraine, united in its defense against Russia’s aggression.</p>\r\n                <img src=\"images/meme2\" alt=\"Global support for Ukraine\" />\r\n            </div>\r\n            <div id=\"2023\">\r\n                <h1>Wagner Group Mutiny</h1>\r\n                <p>In June 2023, the Wagner Group rebelled against Russia’s military leadership. The brief mutiny exposed the cracks in Russia’s war effort and ended with the death of Prigozhin, marking the collapse of a powerful mercenary group.</p>\r\n                <img src=\"images/meme1\" alt=\"Wagner Group mutiny\" />\r\n            </div>\r\n            <div id=\"2023\">\r\n                <h1>Energy Warfare: Blackouts and Sabotage</h1>\r\n                <p>Ukraine’s power grids were targeted in a new phase of the war. Russia’s missile strikes created blackouts, but Ukrainians adapted and found ways to survive the harsh winter.</p>\r\n                <img src=\"images/meme1\" alt=\"Energy warfare\" />\r\n            </div>\r\n            <div id=\"gaza\">\r\n                <h1>War in Gaza: The World Divides</h1>\r\n                <p>As the war in Ukraine raged on, the eruption of violence in Gaza in 2023 pulled attention away from Eastern Europe. The violence spread further, tearing at the fabric of international solidarity. Two wars, two fronts, but one world struggling to find peace.</p>\r\n                <img src=\"images/meme1\" alt=\"War in Gaza\" />\r\n            </div>\r\n            <div id=\"2024\">\r\n                <h1>Reclaiming the South</h1>\r\n                <p>Ukraine’s counteroffensive reclaimed key southern territories, including Kherson. The victory provided hope, but the battle for Ukraine’s land was far from over.</p>\r\n                <img src=\"images/meme2\" alt=\"Reclaiming Kherson\" />\r\n            </div>\r\n            <div id=\"trump\">\r\n                <h1>Trump’s Return: A New Era of Uncertainty</h1>\r\n                <p>In 2024, Donald Trump’s return to the presidency shifted the global balance. His stance on Ukraine and Russia was a wild card, unsettling allies and emboldening adversaries. The world held its breath, unsure of what came next in the war’s shadow.</p>\r\n                <img src=\"images/meme2\" alt=\"Trump elected\" />\r\n            </div>\r\n            <div id=\"2024\">\r\n                <h1>North Korea’s Troops: A New Phase</h1>\r\n                <p>In October 2024, North Korea sent 12,000 troops to fight alongside Russian forces. The war’s global scale expanded, with new nations joining the fray, further complicating an already brutal conflict.</p>\r\n                <img src=\"images/meme2\" alt=\"North Korea troops\" />\r\n            </div>\r\n            <div id=\"2024\">\r\n                <h1>Winter 2024: Holding the Line</h1>\r\n                <p>Despite fierce winter conditions, Ukraine’s forces held firm. The resolve of the Ukrainian people remained strong, and global support continued to pour in as the battle raged into another brutal winter.</p>\r\n                <img src=\"images/meme2\" alt=\"Winter resilience 2024\" />\r\n            </div>\r\n            <div id=\"line-graph-text\">\r\n                <h1>The War is Still Ongoing</h1>\r\n                <p>Even though the interactions are falling and people stop talking about it, the war is still raging on with no signs of stopping.</p>\r\n                <p>But why should you care? Keep scrolling to find out.</p>\r\n            </div>\r\n        </div>\r\n\r\n        <div id=\"line-graph\">\r\n            <canvas id=\"chart1\"></canvas>\r\n        </div>\r\n    </section>\r\n\r\n    <section class=\"negative-posts-section\">\r\n        <div class=\"divider\"></div>\r\n\r\n        <div class=\"chart-container\">\r\n            <canvas id=\"chart2\"></canvas>\r\n        </div>\r\n\r\n        <div class=\"divider\"></div>\r\n\r\n        <div class=\"chart-container\">\r\n            <canvas id=\"stackedDonutChart\"></canvas>\r\n        </div>\r\n\r\n        <div class=\"divider\"></div>\r\n\r\n        <div class=\"chart-container\">\r\n            <canvas id=\"chart3\"></canvas>\r\n        </div>\r\n\r\n        <div class=\"divider\"></div>\r\n\r\n        <div class=\"chart-container\">\r\n            <canvas id=\"chart4\"></canvas>\r\n        </div>\r\n    </section>\r\n    <section id=\"economic-section\">\r\n        <div>\r\n            <h1>From Social Media to Economic Support</h1>\r\n            <p>\r\n                While social media posts obviously don't directly help Ukraine, we will argue that voicing an issue will result in action from your government.\r\n                Social media posts help shaping the public opinion and pressures governments to act.\r\n                Highlighting the war's human cost and Ukraine's resilience amplify global awareness and solidarity, creating an environment where citizens demand action from their leaders.\r\n            </p>\r\n            <p>\r\n                This grassroots mobilization often translates into political advocacy, prompting governments to allocate resources, impose sanctions on aggressors,\r\n                or increase aid to Ukraine. Furthermore, viral social media campaigns can inspire coordinated efforts among nations and international organizations,\r\n                reinforcing the narrative that collective action is necessary. While social media posts themselves are not economic contributions, they play a critical role\r\n                in mobilizing the political will that ultimately results in tangible financial and material support.\r\n            </p>\r\n            <p>\r\n                On the left is shown the amount of Danish social media posts about Ukraine. On the right is shown the development of economic\r\n                support (in DKK) from a handful of Danish organisations.\r\n            </p>\r\n        </div>\r\n        <div>\r\n            <div>\r\n                <canvas id=\"social-media-bar\"></canvas>\r\n            </div>\r\n            <div>\r\n                <canvas id=\"economic-support-bar\"></canvas>\r\n            </div>\r\n        </div>\r\n    </section>\r\n\r\n    <section id=\"call-to-action\">\r\n        <div id=\"call-to-action-flex\">\r\n            <h1>How You Can Help</h1>\r\n            <div>\r\n                <div>\r\n                    <h2>Post on social media, or share our page</h2>\r\n                    <p>Create a post with the hashtag\r\n                        <span id=\"fund-ukraine-1\">#Fund</span><span id=\"fund-ukraine-2\">Ukraine</span> and help remind\r\n                        people that Ukraine still needs help.</p>\r\n                    <p>Or share our website:</p>\r\n                    <div id=\"social-media\">\r\n                        <div id=\"facebook\">\r\n                            <img src=\"/Media/facebook.png\">\r\n                            <p>Share on Facebook</p>\r\n                        </div>\r\n                        <div id=\"linkedin\">\r\n                            <img src=\"/Media/linkedin.png\">\r\n                            <p>Share on LinkedIn</p>\r\n                        </div>\r\n                        <div id=\"x\">\r\n                            <img src=\"/Media/x.png\">\r\n                            <p>Share on X</p>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div>\r\n\r\n                </div>\r\n                <div>\r\n                    <h2>Donate to fundraisers</h2>\r\n                    <p>Donate to Ukraine directly through fundraisers.</p>\r\n                    <p>For example:</p>\r\n                    <a href=\"https://www.u24.gov.ua\" target=\"_blank\"><img src=\"/Media/u24.svg\"></a>\r\n                    <p><a href=\"https://www.u24.gov.ua\" target=\"_blank\">u24.gov.ua</a></p>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </section>\r\n\r\n<script src=\"client.js\"></script>\r\n<script src=\"test.js\"></script>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/index.html b/Client/index.html
+--- a/Client/index.html	(revision 0e2921e870efbe20cf175a7e7b3d037059383d80)
++++ b/Client/index.html	(date 1734286348542)
+@@ -158,29 +158,43 @@
+         </div>
+     </section>
+ 
+-    <section class="negative-posts-section">
+-        <div class="divider"></div>
+-
+-        <div class="chart-container">
+-            <canvas id="chart2"></canvas>
++    <section id="negative-posts-section">
++        <div>
++            <h1>Negative Posts Analysis</h1>
++            <p>This section highlights insights from negative posts categorized as "For" or "Imod" sentiments.</p>
++        </div>
++        <div class="box">
++            <div class="chart-container">
++                <canvas id="postPercentageChart"></canvas>
++            </div>
++            <div class="chart-text">
++                <p>This pie chart shows the percentage of posts categorized as "For" or "Imod".</p>
++            </div>
+         </div>
+-
+-        <div class="divider"></div>
+-
+-        <div class="chart-container">
+-            <canvas id="stackedDonutChart"></canvas>
++        <div class="box">
++            <div class="chart-container">
++                <canvas id="engagementPercentageChart"></canvas>
++            </div>
++            <div class="chart-text">
++                <p>This pie chart shows the percentage of total engagement for posts categorized as "For" or "Imod".</p>
++            </div>
+         </div>
+-
+-        <div class="divider"></div>
+-
+-        <div class="chart-container">
+-            <canvas id="chart3"></canvas>
++        <div class="box">
++            <div class="chart-text">
++                <p>This bar chart shows the average shares per year for either "For" or "Imod" sentiments. Use the button below to toggle between the two.</p>
++            </div>
++            <div class="chart-container">
++                <canvas id="avgSharesChart"></canvas>
++                <button id="toggleSharesChart">Toggle Sentiment</button>
++            </div>
+         </div>
+-
+-        <div class="divider"></div>
+-
+-        <div class="chart-container">
+-            <canvas id="chart4"></canvas>
++        <div class="box">
++            <div class="chart-container">
++                <canvas id="angryReactionsChart"></canvas>
++            </div>
++            <div class="chart-text">
++                <p>This bar chart shows the average number of angry reactions for posts categorized as "For" or "Imod".</p>
++            </div>
+         </div>
+     </section>
+     <section id="economic-section">
+Index: Client/style.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>body {\r\n    background-color: black;\r\n    color: white;\r\n    margin: 0;\r\n    font-family: \"Roboto\", sans-serif;\r\n}\r\n\r\nh1 {\r\n    font-size: 3.5rem;\r\n    font-weight: 500;\r\n}\r\n\r\nh2 {\r\n    font-size: 2.5rem;\r\n    font-weight: 400;\r\n}\r\n\r\nh3 {\r\n    font-size: 2rem;\r\n    font-weight: 350;\r\n}\r\n\r\nh4 {\r\n    font-size: 1.75rem;\r\n    font-weight: 350;\r\n}\r\n\r\np {\r\n    font-size: 1.25rem;\r\n    font-weight: 300;\r\n    line-height: 1.6rem;\r\n}\r\n\r\nsection {\r\n    margin-bottom: 3rem;\r\n}\r\n\r\n#landing-page {\r\n    height: 100vh;\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    width: 100%;\r\n}\r\n\r\n#landing-page div:nth-child(odd) {\r\n    width: 1px;\r\n    flex-grow: 150;\r\n    padding: 3rem;\r\n    padding-right: 100px;\r\n}\r\n\r\n#landing-page div:nth-child(even) {\r\n    background-color: #000000;\r\n    border-radius: 50px;\r\n    height: 80vh;\r\n    width: 0.35rem;\r\n}\r\n\r\n#landing-page > div > p:last-child {\r\n    color: #000000;\r\n    font-style: italic;\r\n}\r\n#total-interactions-section {\r\n    display: flex;\r\n    flex-direction: row;\r\n    align-items: stretch;\r\n    justify-content: space-between;\r\n    width: 100%;\r\n    height: 100vh;\r\n    box-sizing: border-box;\r\n    overflow-x: hidden;\r\n}\r\n\r\n#timeline {\r\n    display: flex;\r\n    flex-direction: column;\r\n    flex: 1;\r\n    padding: 2rem;\r\n    overflow-y: auto;\r\n    background-color: black;\r\n    max-height: 100%;\r\n    width: 100%;\r\n}\r\n\r\n#timelineImage {\r\n    max-height: 14px;\r\n    max-width: 14px;\r\n}\r\n\r\n#line-graph {\r\n    flex: 2;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    padding: 2rem;\r\n    background-color: black;\r\n    position: absolute;\r\n    bottom: 0;\r\n    width: 100%;\r\n}\r\n\r\n#line-graph canvas {\r\n    width: 100%;\r\n    height: auto;\r\n    max-width: 100%;\r\n}\r\n\r\n#timeline h1, #timeline p {\r\n    color: #fff;\r\n}\r\n\r\n#total-interactions-section {\r\n    position: relative;\r\n    overflow-x: hidden;\r\n}\r\n\r\n.negative-posts-section {\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    padding: 2rem;\r\n}\r\n.chart-container {\r\n    width: 100%;\r\n    max-width: 800px;\r\n    margin: 1rem auto;\r\n}\r\n.divider {\r\n    width: 100%;\r\n    height: 4px;\r\n    background-color: black;\r\n    margin: 2rem 0;\r\n}\r\n#timeline::-webkit-scrollbar {\r\n    width: 10px;\r\n}\r\n#timeline::-webkit-scrollbar-track {\r\n    background-color: grey;\r\n}\r\n#call-to-action-flex > h1 {\r\n    text-align: center;\r\n    margin: 1rem;\r\n}\r\n\r\n#call-to-action-flex > div {\r\n    display: flex;\r\n    flex-direction: row;\r\n    padding-left: 100px;\r\n    padding-right: 100px;\r\n}\r\n\r\n#call-to-action-flex > div > div:nth-child(1){\r\n    padding-left: 2rem;\r\n    margin-right: 5rem;\r\n    width: 50%;\r\n}\r\n\r\n#call-to-action-flex > div > div:nth-child(2){\r\n    background-color: #404040;\r\n    border-radius: 50px;\r\n    height: 60vh;\r\n    width: 0.35rem;\r\n    align-self: center;\r\n}\r\n\r\n#call-to-action-flex > div > div:nth-child(3){\r\n    margin-left: 5rem;\r\n    width: 50%;\r\n}\r\n\r\n#fund-ukraine-1 {\r\n    font-style: italic;\r\n    color: gold;\r\n}\r\n\r\n#fund-ukraine-2 {\r\n    font-style: italic;\r\n    color: blue;\r\n}\r\n\r\n#social-media {\r\n    display: flex;\r\n    flex-direction: column;\r\n    width: fit-content;\r\n}\r\n\r\n#social-media > div {\r\n    display: flex;\r\n    flex-direction: row;\r\n    margin-bottom: 1rem;\r\n    border-radius: 5px;\r\n    height: 4rem;\r\n    cursor: pointer;\r\n}\r\n\r\n#social-media > div:nth-child(1) {\r\n    background-color: #486dc3;\r\n}\r\n\r\n#social-media > div:nth-child(2) {\r\n    background-color: #0290d1;\r\n}\r\n\r\n#social-media > div:nth-child(3) {\r\n    background-color: #1a1a1a;\r\n}\r\n\r\n#social-media > div > img {\r\n    height: 100%;\r\n    width: 100%;\r\n    max-width: 40px;\r\n    object-fit: contain;\r\n}\r\n\r\n#social-media > div > p {\r\n    align-self: center;\r\n    margin-left: 2rem;\r\n    margin-right: 3rem;\r\n}\r\n\r\n#economic-section > div {\r\n    padding-left: 100px;\r\n    padding-right: 100px;\r\n    margin-bottom: 5rem;\r\n}\r\n\r\n#economic-section > div:nth-child(1) {\r\n    width: 60%;\r\n}\r\n\r\n#economic-section > div:nth-child(2) {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: center;\r\n}\r\n\r\n#economic-section > div:nth-child(2) > div {\r\n    width: 50%;\r\n    margin-right: 1rem;\r\n    margin-left: 1rem;\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Client/style.css b/Client/style.css
+--- a/Client/style.css	(revision 0e2921e870efbe20cf175a7e7b3d037059383d80)
++++ b/Client/style.css	(date 1734286379228)
+@@ -110,30 +110,90 @@
+ #timeline h1, #timeline p {
+     color: #fff;
+ }
++/* General Box Styling */
++.box {
++    display: flex;
++    flex-direction: row;
++    justify-content: space-between;
++    align-items: center;
++    margin: 20px auto;
++    padding: 20px;
++    border: 1px solid #ccc;
++    border-radius: 8px;
++    background-color: #202020;
++    max-width: 1200px; /* Maintain consistency with other sections */
++    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
++}
+ 
+-#total-interactions-section {
+-    position: relative;
+-    overflow-x: hidden;
++/* Chart Container */
++.chart-container {
++    width: 60%; /* Consistent width for charts */
++    text-align: center;
+ }
+ 
+-.negative-posts-section {
++/* Text Container */
++.chart-text {
++    width: 35%; /* Align text with chart width proportion */
++    font-size: 1.1rem;
++    line-height: 1.6;
++    color: white;
++}
++
++/* Button Styling */
++button {
++    margin-top: 10px;
++    padding: 10px 20px;
++    background-color: #FF5722;
++    color: white;
++    border: none;
++    cursor: pointer;
++    border-radius: 5px;
++    font-size: 1rem;
++    font-weight: bold;
++    transition: background-color 0.3s ease;
++}
++
++button:hover {
++    background-color: #E64A19; /* Slightly darker on hover */
++}
++
++/* Canvas Styling */
++canvas {
++    max-width: 100%;
++    height: auto;
++    margin: 0 auto;
++}
++
++/* Section Styling */
++#negative-posts-section {
++    padding: 2rem 5%;
++    background-color: black; /* Match other sections */
++    color: white;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+-    justify-content: space-between;
+-    padding: 2rem;
+ }
+-.chart-container {
+-    width: 100%;
+-    max-width: 800px;
+-    margin: 1rem auto;
+-}
++
++/* Divider */
+ .divider {
+     width: 100%;
+-    height: 4px;
+-    background-color: black;
++    height: 2px;
++    background-color: #444;
+     margin: 2rem 0;
+ }
++
++/* Responsive Adjustments */
++@media (max-width: 768px) {
++    .box {
++        flex-direction: column; /* Stack charts and text vertically */
++        text-align: center;
++    }
++
++    .chart-container, .chart-text {
++        width: 100%; /* Full-width on smaller screens */
++    }
++}
++
+ #timeline::-webkit-scrollbar {
+     width: 10px;
+ }

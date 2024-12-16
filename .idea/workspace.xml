@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8faa9d06-ea0b-47c2-b22a-889dd161f3b5" name="Changes" comment="fixed timeline position&#10;added css to try and fix -x axe, pictures make issues atm4">
+      <change beforePath="$PROJECT_DIR$/Client/client.js" beforeDir="false" afterPath="$PROJECT_DIR$/Client/client.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Client/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/Client/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/server.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Munkeflunke&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/andreas-brandenborg/06-Common-Cultancy.git&quot;,
+    &quot;accountId&quot;: &quot;b8975934-c868-4046-8427-fddb22909967&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="vcs://Client/client.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="vcs://Client/index.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="vcs://Client/style.css" root0="FORCE_HIGHLIGHTING" />
+    <setting file="vcs://Server/server.js" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2q440lcJ999yYTWRq3ooRSFeseq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.server.js.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/lauri/1. Semester/Webteknologi/06-Common-Cultancy",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.2.0.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\lauri\1. Semester\Webteknologi\06-Common-Cultancy" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="server.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="server.js" working-dir="$PROJECT_DIR$/Server">
+      <envs>
+        <env name="localhost" value="localhost:3306" />
+        <env name="dbpassword" value="Biksemad012@" />
+      </envs>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-WS-242.20224.426" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8faa9d06-ea0b-47c2-b22a-889dd161f3b5" name="Changes" comment="" />
+      <created>1733908293031</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733908293031</updated>
+      <workItem from="1733908294481" duration="7299000" />
+      <workItem from="1733947198545" duration="13000" />
+      <workItem from="1733960644608" duration="767000" />
+      <workItem from="1733962825261" duration="9854000" />
+      <workItem from="1734000847706" duration="7172000" />
+      <workItem from="1734214099250" duration="39653000" />
+    </task>
+    <task id="LOCAL-00001" summary="getLabels(data, labelKey) getValues(data, valueKey):&#10; - Iterates over the data array to extract values&#10;  corresponding to the provided labelKey. &#10;  - Collects and returns these values as an array of labels.&#10;&#10;- Integrated into existing function createChart(labels, values): &#10;&#10;Implemented function getEndpointData(endpoint, labelKey, valueKey):&#10;fetch-json-handlers-return object af et array af de to arrays, labels og values&#10;&#10;- Added function createFirstPost(): - Coordinates the entire process of data fetching, processing, and chart rendering. - Fetches data from the endpoint, processes it, and renders a chart using Chart.js.">
+      <option name="closed" value="true" />
+      <created>1733975514436</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1733975514437</updated>
+    </task>
+    <task id="LOCAL-00002" summary="big one, re-did timeline,(i må gerne kommentere på det), added mulitiple endpoints- added their graphs, added CSS for negative posts section and for timeline,">
+      <option name="closed" value="true" />
+      <created>1734247589738</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1734247589738</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fixed mine grafer for post section&#10;gjorde timeline igen står ovenover grafen&#10;MANGLER AT FIX X-AKSE SCROLL">
+      <option name="closed" value="true" />
+      <created>1734276903775</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1734276903775</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fixed timeline position&#10;added css to try and fix -x axe, pictures make issues atm4">
+      <option name="closed" value="true" />
+      <created>1734277688177</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1734277688177</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixed timeline position&#10;added css to try and fix -x axe, pictures make issues atm4">
+      <option name="closed" value="true" />
+      <created>1734277778708</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1734277778708</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="8831dac2-ad5b-4b1f-bf02-102f41c6d53f" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="8831dac2-ad5b-4b1f-bf02-102f41c6d53f">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="getLabels(data, labelKey) getValues(data, valueKey):&#10; - Iterates over the data array to extract values&#10;  corresponding to the provided labelKey. &#10;  - Collects and returns these values as an array of labels.&#10;&#10;- Integrated into existing function createChart(labels, values): &#10;&#10;Implemented function getEndpointData(endpoint, labelKey, valueKey):&#10;fetch-json-handlers-return object af et array af de to arrays, labels og values&#10;&#10;- Added function createFirstPost(): - Coordinates the entire process of data fetching, processing, and chart rendering. - Fetches data from the endpoint, processes it, and renders a chart using Chart.js." />
+    <MESSAGE value="big one, re-did timeline,(i må gerne kommentere på det), added mulitiple endpoints- added their graphs, added CSS for negative posts section and for timeline," />
+    <MESSAGE value="fixed mine grafer for post section&#10;gjorde timeline igen står ovenover grafen&#10;MANGLER AT FIX X-AKSE SCROLL" />
+    <MESSAGE value="fixed timeline position&#10;added css to try and fix -x axe, pictures make issues atm4" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed timeline position&#10;added css to try and fix -x axe, pictures make issues atm4" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/client.js</url>
+          <line>1</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/client.js</url>
+          <line>310</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/client.js</url>
+          <line>195</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/client.js</url>
+          <line>311</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/Client/client.js</url>
+          <line>4</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

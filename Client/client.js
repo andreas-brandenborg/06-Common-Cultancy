@@ -3,6 +3,9 @@ const boxchart = document.querySelector("#chart2").getContext("2d")
 const facebookDom = document.querySelector("#facebook")
 const linkedInDom = document.querySelector("#linkedin")
 const xDom = document.querySelector("#x")
+const scrollButton = document.getElementById("scrollButton")
+
+
 const borderColorOne= ['rgba(182, 1, 4, 0.3)']
 const backgroundColorOne ='rgba(182,1,4,0.89)'
 const colorFor = '#5D1F9AFF'
@@ -143,6 +146,7 @@ function createChart(values,labels){
                         display: false
                     },
                     ticks: {
+                        max:18,
                         color: "white"
                     }
                 },
@@ -492,10 +496,10 @@ function createBarChartImod(labels, values) {
 facebookDom.addEventListener("click", function() {
     document.location.href = `https://www.facebook.com/share.php?=`
 } )
-document.getElementById("scrollButton").addEventListener("click", function() {
+scrollButton.addEventListener("click", function() {
     // Scroll to the position away from top 2700 px
     window.scrollTo({
-        top: 3500,
+        top: 3200,
         behavior: 'smooth'
     });
 });
