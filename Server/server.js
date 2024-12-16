@@ -65,115 +65,58 @@ app.get('/social-media-posts',(req,res)=> {
         res.send(results);
     })
 });
-app.get('/post-percentage', (req, res) => {
-    const q = `
-        SELECT 
-            classification.gpt_ukraine_for_imod AS sentiment,
-            COUNT(classification.ccpost_id) * 100.0 / 
-            (SELECT COUNT(*) FROM classification WHERE gpt_ukraine_for_imod IN ('For', 'Imod')) AS post_percentage
-        FROM classification
-        WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')
-        GROUP BY classification.gpt_ukraine_for_imod
-        ORDER BY FIELD(sentiment, 'For', 'Imod');`;
+app.get('/sentiment-percentage', (req, res) => {
+    let q = `SELECT gpt_ukraine_for_imod AS sentiment,COUNT(*) * 100.0 / (SELECT COUNT(*) FROM classification WHERE gpt_ukraine_for_imod IN ('For', 'Imod')) AS post_percentage
+                    FROM classification
+                    WHERE gpt_ukraine_for_imod IN ('For', 'Imod')
+                    GROUP BY gpt_ukraine_for_imod
+                    ORDER BY FIELD(gpt_ukraine_for_imod, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
 });
-app.get('/avg-interactions', (req, res) => {
-    const q = `
-        SELECT 
-            classification.gpt_ukraine_for_imod AS sentiment,
-            AVG(metrics.total_interactions) AS avg_interactions
-        FROM classification
-        JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
-        WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')
-        GROUP BY classification.gpt_ukraine_for_imod
-            ORDER BY FIELD(sentiment, 'For', 'Imod');`;
+app.get('/percentage-posts', (req, res) => {
+    const q = `SELECT gpt_ukraine_for_imod AS sentiment,
+                      AVG(metrics.total_interactions) * 100.0 / 
+                      (SELECT AVG(metrics.total_interactions) 
+                      FROM classification
+                      JOIN metrics ON classification.ccpost_id = metrics.ccpost_id 
+                      WHERE gpt_ukraine_for_imod IN ('For', 'Imod')) AS engagement_percentage
+                      FROM classification
+                      JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
+                      WHERE gpt_ukraine_for_imod IN ('For', 'Imod')
+                      GROUP BY gpt_ukraine_for_imod
+                      ORDER BY FIELD(gpt_ukraine_for_imod, 'For', 'Imod');`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
 });
-
-app.get('/avg-angrys', (req, res) => {
+app.get('/avg-shares-for', (req, res) => {
     const q = `
         SELECT 
-            classification.gpt_ukraine_for_imod AS sentiment,
-            AVG(metrics.angrys) AS avg_angrys
-        FROM classification
-        JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
-        WHERE classification.gpt_ukraine_for_imod IN ('For', 'Imod')
-        GROUP BY classification.gpt_ukraine_for_imod
-             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
-    connection.query(q, (error, results)=>{
-        res.send(results);
-    })
-});
-app.get('/avg-interactions-by-sentiment-month', (req, res) => {
-    const q = `
-        SELECT 
-            classification.gpt_ukraine_for_imod AS sentiment,
-            time.yearmonth,
-            AVG(metrics.total_interactions) AS avg_interactions
+        time.year,
+        AVG(metrics.shares) AS avg_shares
         FROM classification
         JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
         JOIN time ON metrics.ccpost_id = time.ccpost_id
-        GROUP BY classification.gpt_ukraine_for_imod, time.yearmonth
-        ORDER BY time.yearmonth, FIELD(sentiment, 'For', 'Imod');
-    `;
+        WHERE classification.gpt_ukraine_for_imod IN ('For') AND time.year IN (2022, 2023, 2024)
+        GROUP BY time.year, classification.gpt_ukraine_for_imod
+        ORDER BY time.year;`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })
 });
-app.get('/avg-interactions-by-sentiment-start-war', (req, res) => {
-    const q = `SELECT 
-    classification.gpt_ukraine_for_imod AS sentiment,
-    AVG(metrics.total_interactions) AS avg_interactions
-FROM classification
-JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
-JOIN time ON metrics.ccpost_id = time.ccpost_id
-WHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022
-GROUP BY classification.gpt_ukraine_for_imod
-             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
-    connection.query(q, (error, results)=>{
-        res.send(results);
-    })
-});
-app.get('/avg-shares-by-sentiment', (req, res) => {
-    const q = `SELECT 
-    classification.gpt_ukraine_for_imod AS sentiment,
-    AVG(metrics.shares) AS avg_shares
-FROM classification
-JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
-GROUP BY classification.gpt_ukraine_for_imod
-             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
-    connection.query(q, (error, results)=>{
-        res.send(results);
-    })
-});
-app.get('/avg-interactions-by-sentiment-start-war', (req, res) => {
-    const q = `SELECT 
-    classification.gpt_ukraine_for_imod AS sentiment,
-    AVG(metrics.total_interactions) AS avg_interactions
-FROM classification
-JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
-JOIN time ON metrics.ccpost_id = time.ccpost_id
-WHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022
-GROUP BY classification.gpt_ukraine_for_imod
-             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
-    connection.query(q, (error, results)=>{
-        res.send(results);
-    })
-});
-app.get('/avg-interactions-by-sentiment-start-war', (req, res) => {
-    const q = `SELECT 
-    classification.gpt_ukraine_for_imod AS sentiment,
-    AVG(metrics.total_interactions) AS avg_interactions
-FROM classification
-JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
-JOIN time ON metrics.ccpost_id = time.ccpost_id
-WHERE time.yearmonth BETWEEN '2022-02' AND '2022-03' -- Adjusted to include February 2022 and March 2022
-GROUP BY classification.gpt_ukraine_for_imod
-             ORDER BY FIELD(sentiment, 'For', 'Imod');`;
+app.get('/avg-shares-imod', (req, res) => {
+    const q = `
+        SELECT 
+            time.year,
+            AVG(metrics.shares) AS avg_shares
+        FROM classification
+        JOIN metrics ON classification.ccpost_id = metrics.ccpost_id
+        JOIN time ON metrics.ccpost_id = time.ccpost_id
+        WHERE classification.gpt_ukraine_for_imod IN ('Imod') AND time.year IN (2022, 2023, 2024)
+        GROUP BY time.year, classification.gpt_ukraine_for_imod
+        ORDER BY time.year;`;
     connection.query(q, (error, results)=>{
         res.send(results);
     })

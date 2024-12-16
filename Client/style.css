@@ -30,11 +30,66 @@ p {
     font-weight: 300;
     line-height: 1.6rem;
 }
-
+.horizontal-divider {
+    width: 80%;
+    height: 0.25rem;
+    background-color: #404040;
+    border-radius: 50px;
+}
 section {
     margin-bottom: 3rem;
 }
 
+#total-interactions-section {
+    background-color: black;
+}
+#scrollButton {
+    background-color: rgba(181, 20, 25, 0.83);
+    color: white;
+    font-size: 24px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    margin: 35px;
+}
+#scrollButton:hover {
+    background-color: #5f1ba1;
+}
+#timeline {
+    margin-left: 21%;
+    max-width: 70%;
+    overflow-y: auto;
+    padding: 1rem;
+    border-left: 3px solid #404040;
+    position: center;
+}
+
+#negative-posts-section {
+    height: 800px;
+    background-color: black;
+}
+#line-graph {
+    margin-left: 21%;
+    position: sticky;
+    bottom: 0;
+    height: 300px;
+    box-shadow: -2px -2px 20px black;
+    background-color: black;
+    padding: 1rem;
+    border-radius: 10px;
+}
+#line-graph canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+#data {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    color: white;
+}
 #landing-page {
     height: 100vh;
     display: flex;
@@ -43,151 +98,134 @@ section {
     justify-content: space-between;
     width: 100%;
 }
-
+#landing-page div:nth-child(1) img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
 #landing-page div:nth-child(odd) {
-    width: 1px;
+    width: 1px; /* Kinda pointless, but needed for flex-grow to make sense. */
     flex-grow: 150;
     padding: 3rem;
     padding-right: 100px;
 }
 
 #landing-page div:nth-child(even) {
-    background-color: #000000;
+    background-color: #404040;
     border-radius: 50px;
     height: 80vh;
-    width: 0.35rem;
+    width: .35rem;
 }
 
 #landing-page > div > p:last-child {
-    color: #000000;
+    color: grey;
     font-style: italic;
 }
-#total-interactions-section {
+#negative-posts-section {
+    height: 100vh;
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 100vh;
-    box-sizing: border-box;
-    overflow-x: hidden;
+}
+#negative-posts-section div:nth-child(even) {
+    background-color: #404040;
+    border-radius: 50px;
+    height: 80vh;
+    width: .35rem;
 }
 
-#timeline {
+#negative-posts-section div:nth-child(odd) {
+    width: 1px; /* Kinda pointless, but needed for flex-grow to make sense. */
+    flex-grow: 150;
+    padding: 3rem;
+}
+#sentiment-percentage-section,
+#avg-shares-section {
+    display: flex;
+    flex-direction: column; /* Arranges text and charts vertically */
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+}
+
+#sentiment-percentage-section > div:nth-child(1),
+#avg-shares-section > div:nth-child(1) {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#sentiment-percentage-section > div:nth-child(2),
+#avg-shares-section > div:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
+}
+#avg-shares-section canvas {
+    max-width: 45%;
+    max-height: 300px;
+}
+#sentiment-percentage-section canvas {
+    max-width: 45%;
+    max-height: 300px;
+}
+#middle-divider-section {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    padding: 2rem;
-    overflow-y: auto;
-    background-color: black;
-    max-height: 100%;
-    width: 100%;
-}
-
-#timelineImage {
-    max-height: 14px;
-    max-width: 14px;
-}
-
-#line-graph {
-    flex: 2;
-    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
-    background-color: black;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+    padding: 3rem;
+    text-align: center;
+}
+#middle-divider-section > div:nth-child(1) {
+    margin-bottom: 2rem;
 }
 
-#line-graph canvas {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-}
-
-#timeline h1, #timeline p {
-    color: #fff;
-}
-
-#total-interactions-section {
-    position: relative;
-    overflow-x: hidden;
-}
-
-.negative-posts-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2rem;
-}
-.chart-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 1rem auto;
-}
-.divider {
-    width: 100%;
-    height: 4px;
-    background-color: black;
-    margin: 2rem 0;
-}
-#timeline::-webkit-scrollbar {
-    width: 10px;
-}
-#timeline::-webkit-scrollbar-track {
-    background-color: grey;
-}
 #call-to-action-flex > h1 {
     text-align: center;
     margin: 1rem;
 }
-
 #call-to-action-flex > div {
     display: flex;
     flex-direction: row;
     padding-left: 100px;
     padding-right: 100px;
 }
-
 #call-to-action-flex > div > div:nth-child(1){
     padding-left: 2rem;
     margin-right: 5rem;
     width: 50%;
 }
-
 #call-to-action-flex > div > div:nth-child(2){
     background-color: #404040;
     border-radius: 50px;
     height: 60vh;
-    width: 0.35rem;
+    width: .35rem;
     align-self: center;
 }
-
 #call-to-action-flex > div > div:nth-child(3){
     margin-left: 5rem;
     width: 50%;
 }
-
 #fund-ukraine-1 {
     font-style: italic;
     color: gold;
 }
-
 #fund-ukraine-2 {
     font-style: italic;
     color: blue;
 }
-
 #social-media {
     display: flex;
     flex-direction: column;
     width: fit-content;
 
 }
-
 #social-media > div {
     display: flex;
     flex-direction: row;
@@ -198,48 +236,50 @@ section {
     width: 19rem;
 
 }
-
 #social-media > div:nth-child(1) {
-    background-color: #486dc3;
+    background-color: #3b589e;
 }
-
+#social-media > div:nth-child(1):hover {
+    transform: scale(1.01);
+}
 #social-media > div:nth-child(2) {
-    background-color: #0290d1;
+    background-color: #0274b3;
+    color: white;
 }
-
+#social-media > div:nth-child(2):hover {
+    transform: scale(1.01);
+}
 #social-media > div:nth-child(3) {
-    background-color: #1a1a1a;
+    background-color: rgb(0, 0, 0);
+    color: #ffffff;
 }
-
+#social-media > div:nth-child(3):hover {
+    transform: scale(1.01);
+}
 #social-media > div > img {
     height: 100%;
     width: 100%;
-    max-width: 51px;
+    max-width: 49px;
     object-fit: contain;
 }
-
 #social-media > div > p {
     align-self: center;
     margin-left: 2rem;
     margin-right: 3rem;
 }
-
 #economic-section > div {
     padding-left: 100px;
     padding-right: 100px;
     margin-bottom: 5rem;
 }
-
 #economic-section > div:nth-child(1) {
     width: 60%;
 }
-
 #economic-section > div:nth-child(2) {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
-
 #economic-section > div:nth-child(2) > div {
     width: 50%;
     margin-right: 1rem;
