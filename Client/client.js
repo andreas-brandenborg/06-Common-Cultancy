@@ -499,7 +499,7 @@ facebookDom.addEventListener("click", function() {
 scrollButton.addEventListener("click", function() {
     // Scroll to the position away from top 2700 px
     window.scrollTo({
-        top: 3200,
+        top: 3960,
         behavior: 'smooth'
     });
 });
