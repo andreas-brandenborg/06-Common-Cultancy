@@ -9,12 +9,24 @@ h1 {
     font-size: 3.5rem;
     font-weight: 500;
 }
+button#toggle-chart {
+    background-color: rgba(182, 1, 4, 0.3);
+    color: white;
+    font-size: 24px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+button#toggle-chart:hover {
+    background-color:rgba(182, 1, 4, 0.5);;
+}
 #title1 {
-    color: #B60104;
+    color: #ffffff;
 }
 
 #title2{
-    color: #5D1F9AFF;
+    color: #ffffff;
 }
 h2 {
     font-size: 2.5rem;
@@ -40,7 +52,6 @@ p {
     width: 80%;
     height: 0.25rem;
     background-color: #404040;
-    border-radius: 50px;
 }
 section {
     margin-bottom: 3rem;
@@ -51,16 +62,6 @@ section {
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
-}
-#scrollButton {
-    background-color: rgba(181, 20, 25, 0.83);
-    color: white;
-    font-size: 24px;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-    margin: 35px;
 }
 #scrollButton:hover {
     background-color: #5f1ba1;
@@ -88,10 +89,6 @@ section {
     max-width: 1100px;  /* Ensures it doesn't stretch beyond the container width */
 }
 
-#negative-posts-section {
-    height: 800px;
-    background-color: black;
-}
 #line-graph {
     position: sticky;
     bottom: 0;
@@ -145,7 +142,6 @@ section {
     font-style: italic;
 }
 #negative-posts-section {
-    height: 100vh;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -170,12 +166,14 @@ section {
     flex-direction: column; /* Arranges text and charts vertically */
     justify-content: center;
     align-items: center;
-    padding: 3rem;
+    padding-right: 3rem;
+    padding-left: 3rem;
+    margin-top:-10px;
 }
 
 #sentiment-percentage-section > div:nth-child(1),
 #avg-shares-section > div:nth-child(1) {
-    text-align: center;
+    text-align: left;
     margin-bottom: 2rem;
 }
 
@@ -190,18 +188,17 @@ section {
 }
 #avg-shares-section canvas {
     max-width: 45%;
-    max-height: 300px;
+    max-height: 490px;
 }
 #sentiment-percentage-section canvas {
-    max-width: 45%;
-    max-height: 300px;
+    max-width: 580px;
+    max-height:440px;
 }
 #middle-divider-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 3rem;
     text-align: center;
 }
 #middle-divider-section > div:nth-child(1) {
