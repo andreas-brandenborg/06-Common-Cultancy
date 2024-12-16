@@ -372,7 +372,7 @@ function createPieChartFor(labels, values) {
     new Chart(ctxFor, {
         type: 'pie',
         data: {
-            labels: ["Against","For"],
+            labels: ["For","Againts"],
             datasets: [{
                 label: 'hi',
                 data: values,
@@ -386,7 +386,7 @@ function createPieChartFor(labels, values) {
                 title: {
                     display: true,
 
-                    text: 'Percentages of posts for or against Ukraine',
+                    text: 'Percentages of posts againts or for Ukraine!',
                     color: "white"
                 }
 
@@ -399,9 +399,9 @@ function createPieChartImod(labels, values) {
     new Chart(ctxImod, {
         type: 'pie',
         data: {
-            labels: ["For","Against"],
+            labels: ["For","Againts"],
             datasets: [{
-                label: 'Percentages of amount of posts',
+                label: 'Percentages of amount of posts!',
                 data: values,
                 backgroundColor: [colorFor,backgroundColorOne],
                 borderColor: [colorForTwo,borderColorOne],
@@ -413,7 +413,7 @@ function createPieChartImod(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: "Average engagement for each type of post",
+                    text: 'Average engagement for same posts',
                     color: "white"
                 },
                 tooltip: {
@@ -445,7 +445,7 @@ function createBarChartFor(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Average Shares on posts that are Supporting',
+                    text: 'Average Shares on Posts that are Supporting',
                     color: "white"
                 },
                 tooltip: {
@@ -488,7 +488,7 @@ function createBarChartImod(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Average Shares on posts that are Against',
+                    text: 'Average Shares on Posts that are Againts',
                     color: "white"
                 },
                 tooltip: {
