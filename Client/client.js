@@ -3,13 +3,45 @@ const boxchart = document.querySelector("#chart2").getContext("2d")
 const facebookDom = document.querySelector("#facebook")
 const linkedInDom = document.querySelector("#linkedin")
 const xDom = document.querySelector("#x")
-const scrollButton = document.getElementById("scrollButton")
+
+const button =document.getElementById('toggle-chart')
+
+button.addEventListener('click', function () {
+    const imodChart = document.getElementById('pie-chart-imod');
+    const forChart = document.getElementById('pie-chart-for');
+
+    if (imodChart.style.display === 'none') {
+        imodChart.style.display = 'block';
+        forChart.style.display = 'none';
+        button.style.color = "white"
+        button.style.background = backgroundColorOne
+        button.textContent = "Flip for Percentage of posts"
+
+    } else {
+        imodChart.style.display = 'none';
+        forChart.style.display = 'block';
+        button.style.background = colorFor
+        button.style.color = "White"
+        button.textContent = "Flip to see engagement"
+
+    }
+});
 
 
-const borderColorOne= ['rgba(182, 1, 4, 0.3)']
-const backgroundColorOne ='rgba(182,1,4,0.89)'
-const colorFor = '#5D1F9AFF'
-const colorForTwo = '#5f1ba1'
+
+
+
+
+
+
+const borderColorOne= ['#B60104']
+const backgroundColorOne ='rgba(182, 1, 4, 0.4)'
+
+const backgroundColorThree= 'rgba(182, 1, 4, 0.3)'
+
+const colorFor = "rgba(31,31,31,0.76)"
+const colorForTwo = "rgba(50,50,50,0.78)"
+
 const borderColorTwo = 'rgba(140, 140, 140, 0.2)'
 const backgroundColorTwo =  'rgba(82, 82, 82, 0.95)'
 showLineChart();
@@ -20,9 +52,6 @@ showPieChartFor()
 showPieChartImod()
 showBarChartImod()
 showBarChartFor()
-fetchMonthData = [];
-fetchInteractions = [];
-
 //Handlers
 //handler for fetch data, loop af data, og push til array, fungerer på alle endpoints
 function getLabels(data, labelKey) {
@@ -32,7 +61,6 @@ function getLabels(data, labelKey) {
     }
     return datalabels; // returnerer fyldte array
 }
-
 function getValues(data, valueKey) {
     let datavalues = [];
     for (let i = 0; i < data.length; i++) {
@@ -40,7 +68,6 @@ function getValues(data, valueKey) {
     }
     return datavalues; // Return the array
 }
-
 function getEndpointData(endpoint, labelKey, valueKey) {
     return fetch(endpoint) // tager en parameter endpoint og henter data
         .then(response => response.json())
@@ -53,7 +80,6 @@ function getEndpointData(endpoint, labelKey, valueKey) {
             console.error('Error fetching data:', error);
         });
 }
-
 async function showLineChart() {
     const { labels, values } = await getEndpointData
     ("http://localhost:3000/total-interactions",// endpoint for dataFetch fra sql
@@ -82,7 +108,7 @@ async function showPieChartFor() {
     const { labels, values } = await getEndpointData(
         "http://localhost:3000/sentiment-percentage", // Endpoint for sentiment percentage
         "sentiment", // "For" and "Imod"
-        "post_percentage" // Percentage of posts
+        "post_percentage", // Percentage of posts
     );
     createPieChartFor(labels, values); // Render the pie chart
 }
@@ -110,10 +136,6 @@ async function showBarChartImod() {
     );
     createBarChartImod(labels, values); // Render the bar chart
 }
-
-
-
-
 async function showBoxChart () {
     const { labels, values } = await getEndpointData
 
@@ -129,7 +151,7 @@ function createChart(values,labels){
         type: 'line',
         data: {
             datasets: [{
-                label: 'Total interaktioner',
+                label: 'Total Interactions ',
                 data: values, // Use the yValue array for the chart data
                 borderColor: ['#B60104'],
                 backgroundColor: 'rgba(182, 1, 4, 0.3)',
@@ -168,7 +190,7 @@ function createChart(values,labels){
             plugins: {
                 title: {
                     display: true,
-                    text: 'Total interaktioner',
+                    text: 'Total Interactions ',
                     color: "white"
                 },
                 legend: {
@@ -306,8 +328,8 @@ function BoxChart(values, labels) {
             datasets: [{
                 data: values,
                 label: "Distribution of affility",
-                borderColor: ['rgba(182, 1, 4, 0.3)', "rgb(95,27,161)", "rgba(140, 140, 140, 0.2)"],
-                backgroundColor: ['rgba(182,1,4,0.89)', "rgb(93,31,154)", "rgba(82,82,82,0.95)"],
+                borderColor: [borderColorOne, colorForTwo, colorForTwo],
+                backgroundColor: [backgroundColorOne, colorFor, colorFor],
                 tension: 0.4,
                 borderWidth: 2.5,
                 fill: true
@@ -350,26 +372,22 @@ function createPieChartFor(labels, values) {
     new Chart(ctxFor, {
         type: 'pie',
         data: {
-            labels: labels,
+            labels: ["Againts","For"],
             datasets: [{
-                label: 'Percentage of posts either with or againts ukraine',
+                label: 'hi',
                 data: values,
-                backgroundColor: [colorFor,backgroundColorOne],
+                backgroundColor: [colorFor,backgroundColorThree],
                 borderColor: [colorForTwo,borderColorOne],
                 borderWidth: 1,
             }]
         },
         options: {
-            responsive: true,
             plugins: {
                 title: {
                     display: true,
-                    text: 'The percentage of counted posts that were either with or againts ukraine',
-                    color: "white"
-                },
-                tooltip: {
-                    backgroundColor: "black",
 
+                    text: 'Percentages of posts againts or for Ukraine!',
+                    color: "white"
                 }
 
             }
@@ -381,9 +399,9 @@ function createPieChartImod(labels, values) {
     new Chart(ctxImod, {
         type: 'pie',
         data: {
-            labels: labels,
+            labels: ["For","Againts"],
             datasets: [{
-                label: 'Percentage of posts either with or againts ukraine',
+                label: 'Percentages of amount of posts!',
                 data: values,
                 backgroundColor: [colorFor,backgroundColorOne],
                 borderColor: [colorForTwo,borderColorOne],
@@ -395,7 +413,7 @@ function createPieChartImod(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'The percentage of counted posts that were either with or againts ukraine',
+                    text: 'Average engagement for same posts',
                     color: "white"
                 },
                 tooltip: {
@@ -416,8 +434,8 @@ function createBarChartFor(labels, values) {
             datasets: [{
                 label: 'Avg Shares for "For" Sentiment',
                 data: values,  // Average shares
-                borderColor: [colorFor],
-                backgroundColor: colorForTwo,
+                borderColor: [colorForTwo],
+                backgroundColor: colorFor,
                 borderWidth: 1,
                 borderRadius: 6,
             }]
@@ -457,7 +475,7 @@ function createBarChartImod(labels, values) {
         data: {
             labels: labels,  // Year labels
             datasets: [{
-                label: 'Avg Shares for "For" Sentiment',
+                label: 'Avg Shares for "Imod" Sentiment',
                 data: values,  // Average shares
                 borderColor: [borderColorOne],
                 backgroundColor: backgroundColorOne,
@@ -470,7 +488,7 @@ function createBarChartImod(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Average Shares on Posts that are Supporting',
+                    text: 'Average Shares on Posts that are Againts',
                     color: "white"
                 },
                 tooltip: {
@@ -493,24 +511,16 @@ function createBarChartImod(labels, values) {
         }
     });
 }
+
 facebookDom.addEventListener("click", function() {
     document.location.href = `https://www.facebook.com/share.php?=`
 } )
-scrollButton.addEventListener("click", function() {
-    // Scroll to the position away from top 2700 px
-    window.scrollTo({
-        top: 3960,
-        behavior: 'smooth'
-    });
-});
 linkedInDom.addEventListener("click", function() {
     document.location.href = `https://www.linkedin.com/article/new/`
 } )
 xDom.addEventListener("click", function() {
     document.location.href = `https://x.com/compose/post`
 } )
-
-
 
 
 
