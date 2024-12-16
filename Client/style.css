@@ -57,7 +57,7 @@ section {
     background-color: #5f1ba1;
 }
 #timeline {
-    margin-left: 21%;
+    margin-left: 19%;
     max-width: 70%;
     overflow-y: auto;
     padding: 1rem;
@@ -70,7 +70,7 @@ section {
     background-color: black;
 }
 #line-graph {
-    margin-left: 21%;
+    margin-left: 19%;
     position: sticky;
     bottom: 0;
     height: 300px;
