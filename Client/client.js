@@ -475,7 +475,7 @@ function createBarChartImod(labels, values) {
         data: {
             labels: labels,  // Year labels
             datasets: [{
-                label: 'Avg Shares for "Imod" Sentiment',
+                label: 'Avg Shares for "Against" Sentiment',
                 data: values,  // Average shares
                 borderColor: [borderColorOne],
                 backgroundColor: backgroundColorOne,
