@@ -15,14 +15,14 @@ button.addEventListener('click', function () {
         forChart.style.display = 'none';
         button.style.color = "white"
         button.style.background = backgroundColorOne
-        button.textContent = "Flip for Percentage of posts"
+        button.textContent = "Click for Percentage of posts"
 
     } else {
         imodChart.style.display = 'none';
         forChart.style.display = 'block';
         button.style.background = colorFor
         button.style.color = "White"
-        button.textContent = "Flip to see engagement"
+        button.textContent = "Click to see engagement"
 
     }
 });
@@ -372,7 +372,7 @@ function createPieChartFor(labels, values) {
     new Chart(ctxFor, {
         type: 'pie',
         data: {
-            labels: ["Againts","For"],
+            labels: ["Against","For"],
             datasets: [{
                 label: 'hi',
                 data: values,
@@ -386,7 +386,7 @@ function createPieChartFor(labels, values) {
                 title: {
                     display: true,
 
-                    text: 'Percentages of posts againts or for Ukraine!',
+                    text: 'Percentages of posts for or against Ukraine',
                     color: "white"
                 }
 
@@ -399,9 +399,9 @@ function createPieChartImod(labels, values) {
     new Chart(ctxImod, {
         type: 'pie',
         data: {
-            labels: ["For","Againts"],
+            labels: ["For","Against"],
             datasets: [{
-                label: 'Percentages of amount of posts!',
+                label: 'Percentages of amount of posts',
                 data: values,
                 backgroundColor: [colorFor,backgroundColorOne],
                 borderColor: [colorForTwo,borderColorOne],
@@ -413,7 +413,7 @@ function createPieChartImod(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Average engagement for same posts',
+                    text: "Average engagement for each type of post",
                     color: "white"
                 },
                 tooltip: {
@@ -445,7 +445,7 @@ function createBarChartFor(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Average Shares on Posts that are Supporting',
+                    text: 'Average Shares on posts that are Supporting',
                     color: "white"
                 },
                 tooltip: {
@@ -488,7 +488,7 @@ function createBarChartImod(labels, values) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Average Shares on Posts that are Againts',
+                    text: 'Average Shares on posts that are Against',
                     color: "white"
                 },
                 tooltip: {
